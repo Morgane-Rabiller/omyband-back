@@ -20,3 +20,13 @@ npm run resetDB
 ```bash
 npm install
 ```
+
+4. Copier le point env.example puis renseigner les données
+```bash
+cp .env.example .env
+```
+
+5. Lancer l'API
+```bash
+npm run dev
+```
