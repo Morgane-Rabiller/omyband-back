@@ -30,7 +30,8 @@ CREATE TABLE "user" (
     avatar VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     updated_at TIMESTAMP,
-    description VARCHAR(1000)
+    description VARCHAR(1000),
+    FOREIGN KEY (role_id) REFERENCES "role"(role_id) ON UPDATE CASCADE
 );
 
 CREATE TABLE "type" (
