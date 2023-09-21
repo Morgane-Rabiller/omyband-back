@@ -13,6 +13,10 @@ const Role = db.define("roles", {
         type : DataTypes.STRING,
         allowNull: false,
     },
-});
+    },
+    {
+    timestamps: false
+    }
+);
 
 export default Role;
