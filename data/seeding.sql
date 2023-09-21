@@ -47,18 +47,22 @@ INSERT INTO styles (name, image) VALUES
 ('Rap', 'image_path'),
 ('Gospel', 'image_path');
 
+INSERT INTO role (name) VALUES
+('admin'),
+('user');
+
 -- Données pour la table User
-INSERT INTO "user" (pseudo, password, email, location, avatar, description) VALUES
-('Alice', 'password123', 'alice@email.com', 'Paris', 'alice_avatar_path', 'Je suis une chanteuse et pianiste classique.'),
-('Bob', 'password456', 'bob@email.com', 'Lyon', 'bob_avatar_path', 'Bassiste dans un groupe de rock depuis 5 ans.'),
-('Charlie', 'password789', 'charlie@email.com', 'Marseille', 'charlie_avatar_path', 'Producteur et DJ électronique.'),
-('Daisy', 'password101', 'daisy@email.com', 'Lille', 'daisy_avatar_path', 'Violoniste passionnée par le jazz et le blues.'),
-('Eve', 'password112', 'eve@email.com', 'Strasbourg', 'eve_avatar_path', 'Chanteuse de jazz professionnel.'),
-('Frank', 'password113', 'frank@email.com', 'Toulouse', 'frank_avatar_path', 'Guitariste dans un groupe de blues.'),
-('Grace', 'password114', 'grace@email.com', 'Nantes', 'grace_avatar_path', 'Violoncelliste classique.'),
-('Hank', 'password115', 'hank@email.com', 'Bordeaux', 'hank_avatar_path', 'Batteur dans un groupe de punk.'),
-('Ivy', 'password116', 'ivy@email.com', 'Nice', 'ivy_avatar_path', 'Flûtiste avec une inclinaison pour le folk.'),
-('Jack', 'password117', 'jack@email.com', 'Montpellier', 'jack_avatar_path', 'Saxophoniste recherchant des sessions jazz.');
+INSERT INTO "user" (role_id, pseudo, password, email, location, avatar, description) VALUES
+(2, 'Alice', 'password123', 'alice@email.com', 'Paris', 'alice_avatar_path', 'Je suis une chanteuse et pianiste classique.'),
+(2, 'Bob', 'password456', 'bob@email.com', 'Lyon', 'bob_avatar_path', 'Bassiste dans un groupe de rock depuis 5 ans.'),
+(2, 'Charlie', 'password789', 'charlie@email.com', 'Marseille', 'charlie_avatar_path', 'Producteur et DJ électronique.'),
+(2, 'Daisy', 'password101', 'daisy@email.com', 'Lille', 'daisy_avatar_path', 'Violoniste passionnée par le jazz et le blues.'),
+(2, 'Eve', 'password112', 'eve@email.com', 'Strasbourg', 'eve_avatar_path', 'Chanteuse de jazz professionnel.'),
+(2, 'Frank', 'password113', 'frank@email.com', 'Toulouse', 'frank_avatar_path', 'Guitariste dans un groupe de blues.'),
+(2, 'Grace', 'password114', 'grace@email.com', 'Nantes', 'grace_avatar_path', 'Violoncelliste classique.'),
+(2, 'Hank', 'password115', 'hank@email.com', 'Bordeaux', 'hank_avatar_path', 'Batteur dans un groupe de punk.'),
+(2, 'Ivy', 'password116', 'ivy@email.com', 'Nice', 'ivy_avatar_path', 'Flûtiste avec une inclinaison pour le folk.'),
+(2, 'Jack', 'password117', 'jack@email.com', 'Montpellier', 'jack_avatar_path', 'Saxophoniste recherchant des sessions jazz.');
 
 -- Données pour la type
 INSERT INTO "type" (type_id, name) VALUES

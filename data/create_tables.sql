@@ -11,10 +11,18 @@ DROP TABLE IF EXISTS "styles";
 DROP TABLE IF EXISTS "announcement";
 DROP TABLE IF EXISTS "user";
 DROP TABLE IF EXISTS "type";
+DROP TABLE IF EXISTS "role";
+
+-- Table role
+CREATE TABLE "role" (
+    role_id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL
+);
 
 -- Table User
 CREATE TABLE "user" (
     user_id SERIAL PRIMARY KEY,
+    role_id INT NOT NULL,
     pseudo VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
