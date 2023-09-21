@@ -1,8 +1,9 @@
-import { sequelize } from "sequelize";
+import sequelize from "sequelize";
+import db from "../db/db.js"
 
 const { DataTypes } = sequelize;
 
-const Role = db.define("role", {
+const Role = db.define("roles", {
     role_id : {
         type : DataTypes.INTEGER,
         primaryKey : true,

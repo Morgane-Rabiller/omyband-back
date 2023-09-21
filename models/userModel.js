@@ -1,8 +1,9 @@
-import { sequelize } from "sequelize";
+import sequelize from "sequelize";
+import db from "../db/db.js"
 
 const { DataTypes } = sequelize;
 
-const User = db.define("user", {
+const User = db.define("users", {
     user_id : {
         type : DataTypes.INTEGER,
         primaryKey : true,
@@ -38,10 +39,12 @@ const User = db.define("user", {
         allowNull: false,
     },
     created_at : {
+        field: 'created_at',
         type : DataTypes.DATE,
         allowNull: false,
     },
-    updated_at : {
+    updated_at: {
+        field: 'updated_at',
         type : DataTypes.DATE,
         allowNull: true,
     },

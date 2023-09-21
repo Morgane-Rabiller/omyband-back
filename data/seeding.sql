@@ -47,12 +47,12 @@ INSERT INTO styles (name, image) VALUES
 ('Rap', 'image_path'),
 ('Gospel', 'image_path');
 
-INSERT INTO role (name) VALUES
+INSERT INTO roles (name) VALUES
 ('admin'),
 ('user');
 
 -- Données pour la table User
-INSERT INTO "user" (role_id, pseudo, password, email, location, avatar, description) VALUES
+INSERT INTO "users" (role_id, pseudo, password, email, location, avatar, description) VALUES
 (2, 'Alice', 'password123', 'alice@email.com', 'Paris', 'alice_avatar_path', 'Je suis une chanteuse et pianiste classique.'),
 (2, 'Bob', 'password456', 'bob@email.com', 'Lyon', 'bob_avatar_path', 'Bassiste dans un groupe de rock depuis 5 ans.'),
 (2, 'Charlie', 'password789', 'charlie@email.com', 'Marseille', 'charlie_avatar_path', 'Producteur et DJ électronique.'),
@@ -65,13 +65,13 @@ INSERT INTO "user" (role_id, pseudo, password, email, location, avatar, descript
 (2, 'Jack', 'password117', 'jack@email.com', 'Montpellier', 'jack_avatar_path', 'Saxophoniste recherchant des sessions jazz.');
 
 -- Données pour la type
-INSERT INTO "type" (type_id, name) VALUES
+INSERT INTO "types" (type_id, name) VALUES
 (1, 'Musicien(ne)/Chanteur(se)'),
 (2, 'Groupe'),
 (3, 'Producteur');
 
 -- Données pour la table Announcement
-INSERT INTO "announcement" (user_id, user_type, research_type, title, description) VALUES
+INSERT INTO "announcements" (user_id, user_type, research_type, title, description) VALUES
 (1, 1, 2, 'Cherche groupe de musique classique', 'Je suis une pianiste et chanteuse cherchant un groupe de musique classique pour des concerts et événements.'),
 (2, 2, 1, 'Recherche chanteur pour groupe de rock', 'Notre groupe de rock cherche un nouveau chanteur pour compléter notre ensemble. Répétitions chaque samedi.'),
 (3, 3, 1, 'Offre de production pour artiste émergent', 'Je suis un producteur de musique électronique et je cherche des artistes émergents à produire. Contactez-moi pour en savoir plus.'),
