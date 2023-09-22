@@ -8,6 +8,8 @@
  ```
  ```sql
  CREATE DATABASE "omyband";
+ CREATE USER omyband WITH PASSWORD 'omyband';
+ CREATE DATABASE omyband WITH OWNER omyband;
  ```
 
  2. Remplir la bas de données

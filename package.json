@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon index.js",
-    "resetDB": "psql -U postgres -d omyband -f data/create_tables.sql && psql -U postgres -d omyband -f data/seeding.sql"
+    "resetDB": "psql -U omyband -d omyband -f data/create_tables.sql && psql -U omyband -d omyband -f data/seeding.sql"
   },
   "keywords": [],
   "author": "",
