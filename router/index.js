@@ -4,6 +4,8 @@ import { roleController } from "../controllers/roleController.js";
 import { instrumentController } from "../controllers/instrumentController.js";
 import { styleController } from "../controllers/styleController.js";
 import { typeController } from "../controllers/typeController.js";
+import { announcementController}  from "../controllers/announcementController.js";
+
 
 const router = Router();
 
@@ -39,6 +41,10 @@ router.get('/types', typeController.getTypes);
 router.get('/types/:id', typeController.getTypeById);
 router.post('/types', typeController.createType);
 router.put('/types/:id', typeController.updateType);
+
+//Routeurs announcements
+router.get('/announcements', announcementController.getAnnouncement)
+router.get('/announcements/:id', announcementController.getAnnouncementById)
 
 export default router;
 
