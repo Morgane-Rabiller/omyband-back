@@ -1,6 +1,9 @@
 import { Router } from "express";
 import { userController} from '../controllers/userController.js';
 import { roleController } from "../controllers/roleController.js";
+import { instrumentController } from "../controllers/instrumentController.js";
+import { styleController } from "../controllers/styleController.js";
+import { typeController } from "../controllers/typeController.js";
 
 const router = Router();
 
@@ -19,6 +22,23 @@ router.get('/roles/:id', roleController.getRoleById);
 router.post('/roles', roleController.createRole);
 router.put('/roles/:id', roleController.updateRole);
 
+// Routes pour les instruments : 
+router.get('/instruments', instrumentController.getInstruments);
+router.get('/instruments/:id', instrumentController.getInstrumentById);
+router.post('/instruments', instrumentController.createInstrument);
+router.put('/instruments/:id', instrumentController.updateInstrument);
+
+// Routes pour les styles : 
+router.get('/styles', styleController.getStyles);
+router.get('/styles/:id', styleController.getStyleById);
+router.post('/styles', styleController.createStyle);
+router.put('/styles/:id', styleController.updateStyle);
+
+// Routes pour les types : 
+router.get('/types', typeController.getTypes);
+router.get('/types/:id', typeController.getTypeById);
+router.post('/types', typeController.createType);
+router.put('/types/:id', typeController.updateType);
 
 export default router;
 

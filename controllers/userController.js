@@ -54,7 +54,7 @@ const userController = {
         try {
             const hashedPassword = await bcrypt.hash(body.password, 10);
             const user = await User.create({ ...body, password: hashedPassword })
-            return res.status(201).json({message : "Utilisateur créé"});
+            return res.status(201).json({message : "Utilisateur créé", user});
         } catch (error) {
             return res.status(500).json({message : 'default in User Creation route', error: error});
         }
