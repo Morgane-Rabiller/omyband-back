@@ -29,7 +29,43 @@ const announcementController = {
                 console.error('Error:', error);
                 return res.status(500).json({message : 'default in Announcement route', error: error});
             }
-        },
+    },
+    createAnnouncement: async (req, res) => {
+        const { body } = req;
+        console.log(body)
+        try {
+            const announcement = await Announcement.create({...body})
+            return res.status(201).json({ message: "Announcement created", announcement })
+        } catch (error) {
+            console.log(error)
+            return res.status(500).json({ message: 'default in Announcement Creation route', error: error });
+            
+        }
+    },
+    updateAnnouncement: async (req, res) => {
+        const announcementId = parseInt(req.params.id, 10);
+        try {
+            const announcementToUpdate = await Announcement.findByPk(announcementId);
+            const { body } = req;
+            await announcementToUpdate.update({...body});
+            res.status(201).json({message : "Annonce modifié", announcement: announcementToUpdate});
+
+        } catch (error) {
+            res.status(500).json(error);
+        }
+    },
+    deleteAnnouncement: async (req, res) => {
+    
+        try {
+            const announcementId = parseInt(req.params.id, 10);
+            const announcementToDelete = await Announcement.findByPk(announcementId);
+            await announcementToDelete.destroy({ where: { announcement_id: announcementToDelete } })
+            res.status(201).json({message : "Annonce supprimé", announcement: announcementToDelete});
+
+        } catch (error) {
+            res.status(500).json(error);
+        }
+    }
 }
 
 export {announcementController}

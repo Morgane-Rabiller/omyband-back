@@ -38,17 +38,10 @@ const Announcement = db.define("announcements", {
     description : {
         type : DataTypes.STRING(1000),
         allowNull: false,
-    },
-    created_at : {
-        field: 'created_at',
-        type : DataTypes.DATE,
-        allowNull: false,
-    },
-    updated_at: {
-        field: 'updated_at',
-        type : DataTypes.DATE,
-        allowNull: true,
     }
+},{
+    createdAt: 'created_at',
+    updatedAt: 'updated_at'
 });
 
 export default Announcement;

@@ -43,8 +43,12 @@ router.post('/types', typeController.createType);
 router.put('/types/:id', typeController.updateType);
 
 //Routeurs announcements
-router.get('/announcements', announcementController.getAnnouncement)
-router.get('/announcements/:id', announcementController.getAnnouncementById)
+router.get('/announcements', announcementController.getAnnouncement);
+router.get('/announcements/:id', announcementController.getAnnouncementById);
+router.post('/announcements/', announcementController.createAnnouncement);
+router.put('/announcements/:id', announcementController.updateAnnouncement);
+router.delete('/announcements/:id', announcementController.deleteAnnouncement);
+
 
 export default router;
 

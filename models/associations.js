@@ -11,4 +11,8 @@ User.hasMany(Announcement, { foreignKey: 'user_id' });
 Announcement.belongsTo(User,{foreignKey:'user_id'})
 
 
+// Associations Annoucement -> User
+User.hasMany(Announcement, { foreignKey: 'user_id' });
+Announcement.belongsTo(User,{foreignKey:'user_id'})
+
 export { User, Role, Announcement };
