@@ -6,13 +6,14 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon index.js",
-    "resetDB": "psql -U postgres -d omyband -f data/create_tables.sql && psql -U postgres -d omyband -f data/seeding.sql"
+    "resetDB": "psql -U omyband -d omyband -f data/create_tables.sql && psql -U omyband -d omyband -f data/seeding.sql"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "json-web-token": "^3.2.0",
