@@ -5,12 +5,13 @@ import { instrumentController } from "../controllers/instrumentController.js";
 import { styleController } from "../controllers/styleController.js";
 import { typeController } from "../controllers/typeController.js";
 import { announcementController}  from "../controllers/announcementController.js";
+import { authController } from "../controllers/authController.js";
 
 
 const router = Router();
 
 // Route de log In :
-router.post('/login', userController.login);
+router.post('/login', authController.login);
 
 // Routes pour les Users : 
 router.get('/users', userController.getUsers);
