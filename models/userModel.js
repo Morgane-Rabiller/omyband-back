@@ -36,7 +36,7 @@ const User = db.define("users", {
     },
     avatar : {
         type : DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
     },
     created_at : {
         field: 'created_at',
@@ -50,7 +50,7 @@ const User = db.define("users", {
     },
     description : {
         type : DataTypes.STRING(1000),
-        allowNull: false,
+        allowNull: true,
     },
 }, {
     createdAt: 'created_at',
