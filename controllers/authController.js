@@ -23,8 +23,6 @@ login: async (req, res) => {
 
 async sendToken (res, user) {
     const accessToken = await authController.generateAccessToken(user);
-    console.log('USER : ', user);
-    console.log('ACCESSTOKEN', accessToken);
     return res.status(200).json({ message: "Connexion réussie", accessToken});
 },
 
@@ -43,6 +41,30 @@ async generateAccessToken(user) {
             process.env.JWT_SECRET,
         );
     },
+
+    // Middelware d'authorisation pour les routes protégées. 
+    // Hearder necessaire : authorization
+    // Format : "bearer + ' ' + accessToken"
+    authorize: async (req, res, next) => {
+        const header = req.headers['authorization'];
+        if (!header) {
+            return res.status(401).json({message: "Aucun Token d'authorisation fourni"});
+        }
+    
+        const accessToken = header.split(' ')[1];
+        if (!accessToken) {
+            return res.status(401).json({message: "Format d'authorisation invalide"});
+        }
+    
+        try {
+            const decodedAccessToken = jwt.verify(accessToken, process.env.JWT_SECRET);
+            req.user = decodedAccessToken.data;
+            next()
+        } catch (error) {
+            res.status(401).json({message: "Token invalide"});
+        }
+    },
 };
+
 
 export {authController};
