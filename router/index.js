@@ -13,6 +13,17 @@ const router = Router();
 // Route de log In :
 router.post('/login', authController.login);
 
+// Protected Routes: 
+// router.get('/users', authController.authorize, userController.getUsers);
+// router.get('/users/:id', authController.authorize, userController.getUserById);
+// router.put('/users/:id', authController.authorize, userController.updateUser);
+// router.delete('/users/:id',authController.authorize, userController.deleteUser);
+
+// router.post('/announcements/',authController.authorize, announcementController.createAnnouncement);
+// router.put('/announcements/:id',authController.authorize, announcementController.updateAnnouncement);
+// router.delete('/announcements/:id',authController.authorize, announcementController.deleteAnnouncement);
+
+
 // Routes pour les Users : 
 router.get('/users', userController.getUsers);
 router.get('/users/:id', userController.getUserById);
