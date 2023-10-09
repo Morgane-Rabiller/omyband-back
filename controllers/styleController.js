@@ -50,6 +50,17 @@ const styleController = {
             res.status(500).json(error);
         }
     },
+    deleteStyle: async (req, res) => {
+        try {
+            const styleId = parseInt(req.params.id, 10);
+            const styleToDelete = await Style.findByPk(styleId);
+            await styleToDelete.destroy({ where: { style_id: styleToDelete } })
+            res.status(201).json({message : "Style supprimé", style: styleToDelete});
+
+        } catch (error) {
+            res.status(500).json(error);
+        }
+    }
 };
 
 export { styleController };

@@ -50,6 +50,17 @@ const instrumentController = {
             res.status(500).json(error);
         }
     },
+    deleteInstrument: async (req, res) => {
+        try {
+            const instrumentId = parseInt(req.params.id, 10);
+            const instrumentToDelete = await Instrument.findByPk(instrumentId);
+            await instrumentToDelete.destroy({ where: { instrument_id: instrumentToDelete } })
+            res.status(201).json({message : "Instrument supprimé", instrument: instrumentToDelete});
+
+        } catch (error) {
+            res.status(500).json(error);
+        }
+    }
 };
 
 export { instrumentController };

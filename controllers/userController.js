@@ -56,6 +56,17 @@ const userController = {
             res.status(500).json(error);
         }
     },
+    deleteUser: async (req, res) => {
+        try {
+            const userId = parseInt(req.params.id, 10);
+            const userToDelete = await User.findByPk(userId);
+            await userToDelete.destroy({ where: { user_id: userToDelete } })
+            res.status(201).json({message : "Utilisateur supprimé", user: userToDelete});
+
+        } catch (error) {
+            res.status(500).json(error);
+        }
+    }
 };
 
 export { userController };

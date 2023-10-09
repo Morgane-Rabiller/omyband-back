@@ -50,6 +50,17 @@ const typeController = {
             res.status(500).json(error);
         }
     },
+    deleteType: async (req, res) => {
+        try {
+            const typeId = parseInt(req.params.id, 10);
+            const typeToDelete = await Type.findByPk(typeId);
+            await typeToDelete.destroy({ where: { type_id: typeToDelete } })
+            res.status(201).json({message : "Type supprimé", type: typeToDelete});
+
+        } catch (error) {
+            res.status(500).json(error);
+        }
+    }
 };
 
 export { typeController };

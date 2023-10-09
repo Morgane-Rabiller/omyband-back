@@ -26,18 +26,15 @@ const announcementController = {
                     return res.status(404).json('Announcement not found');
                 }
             } catch (error) {
-                console.error('Error:', error);
                 return res.status(500).json({message : 'default in Announcement route', error: error});
             }
     },
     createAnnouncement: async (req, res) => {
         const { body } = req;
-        console.log(body)
         try {
             const announcement = await Announcement.create({...body})
             return res.status(201).json({ message: "Announcement created", announcement })
         } catch (error) {
-            console.log(error)
             return res.status(500).json({ message: 'default in Announcement Creation route', error: error });
             
         }

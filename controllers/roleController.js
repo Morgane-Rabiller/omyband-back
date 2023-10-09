@@ -50,6 +50,17 @@ const roleController = {
             res.status(500).json(error);
         }
     },
+    deleteRole: async (req, res) => {
+        try {
+            const roleId = parseInt(req.params.id, 10);
+            const roleToDelete = await Role.findByPk(roleId);
+            await roleToDelete.destroy({ where: { role_id: roleToDelete } })
+            res.status(201).json({message : "Role supprimé", role: roleToDelete});
+
+        } catch (error) {
+            res.status(500).json(error);
+        }
+    }
 };
 
 export { roleController };
