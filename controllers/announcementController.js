@@ -1,15 +1,21 @@
-import Announcement from "../models/announcementModel.js";
+//import Announcement from "../models/announcementModel.js";
+//import User from "../models/userModel.js";
+//import Role from "../models/roleModel.js";
+import {Announcement} from "../models/associations.js"
 
 const announcementController = {
     getAnnouncement: async (req, res) => {
         try {
-            const announcements = await Announcement.findAll()
+            const announcements = await Announcement.findAll({
+                include : ['type','user','instruments','styles']
+            })
             if (announcements) {
                 return res.status(200).json(announcements);
             } else {
                 return res.status(500).json({ message: "Announcements not return"});
             }
-        } catch(error) {
+        } catch (error) {
+            console.log(error)
             res.status(500).json({message : 'default in Announcement route', error: error});
         }
     },
@@ -18,7 +24,7 @@ const announcementController = {
             try {
                 const announcement = await Announcement.findByPk(announcementId, {
                     attributes : {exclude : ["createdAt", "updatedAt"]},
-                    include: ['user']
+                    include : ['type','user','instruments','styles']
                 });
                 if(announcement) {
                     return res.status(200).json(announcement);
