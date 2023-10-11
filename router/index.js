@@ -17,11 +17,11 @@ router.post('/login', authController.login);
 // router.get('/users', authController.authorize, userController.getUsers);
 // router.get('/users/:id', authController.authorize, userController.getUserById);
 // router.put('/users/:id', authController.authorize, userController.updateUser);
-// router.delete('/users/:id',authController.authorize, userController.deleteUser);
+// router.delete('/users/:id', authController.authorize, userController.deleteUser);
 
-// router.post('/announcements/',authController.authorize, announcementController.createAnnouncement);
-// router.put('/announcements/:id',authController.authorize, announcementController.updateAnnouncement);
-// router.delete('/announcements/:id',authController.authorize, announcementController.deleteAnnouncement);
+// router.post('/announcements/', authController.authorize, announcementController.createAnnouncement);
+// router.put('/announcements/:id', authController.authorize, announcementController.updateAnnouncement);
+// router.delete('/announcements/:id', authController.authorize, announcementController.deleteAnnouncement);
 
 
 // Routes pour les Users : 
