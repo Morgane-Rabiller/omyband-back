@@ -1,17 +1,17 @@
-import User from "../models/userModel.js";
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
-import 'dotenv/config';
+const User = require( "../models/userModel.js");
+const jwt = require( 'jsonwebtoken');
+const bcrypt = require( 'bcrypt');
+require('dotenv').config()
 
 const authController = {
 login: async (req, res) => {
-    const  {email, password } = req.body;
+        const { email, password } = req.body;
     try {
         const user = await User.findOne({where: { email }});
         if (!user) {
             return res.status(401).json({message: "email ou mot de passe incorrect"});
         }
-        if(await bcrypt.compare(password, user.password)){
+        if (await bcrypt.compare(password, user.password)) {
             return authController.sendToken(res, user);
         };
         return res.status(401).json({message: "email ou mot de passe incorrect"});
@@ -21,12 +21,12 @@ login: async (req, res) => {
     }
 },
 
-async sendToken (res, user) {
-    const accessToken = await authController.generateAccessToken(user);
+    async sendToken(res, user) {
+        const accessToken = await authController.generateAccessToken(user);
     return res.status(200).json({ message: "Connexion réussie", accessToken});
 },
 
-async generateAccessToken(user) {
+    async generateAccessToken(user) {
         return jwt.sign(
             {
                 data: {
@@ -67,4 +67,4 @@ async generateAccessToken(user) {
 };
 
 
-export {authController};
+module.exports = {authController};

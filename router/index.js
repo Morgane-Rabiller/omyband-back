@@ -1,12 +1,12 @@
-import { Router } from "express";
-import { userController} from '../controllers/userController.js';
-import { roleController } from "../controllers/roleController.js";
-import { instrumentController } from "../controllers/instrumentController.js";
-import { styleController } from "../controllers/styleController.js";
-import { typeController } from "../controllers/typeController.js";
-import { announcementController}  from "../controllers/announcementController.js";
-import { authController } from "../controllers/authController.js";
-import { contactController } from "../controllers/contactMailController.js";
+
+const { Router } =require("express");
+const { userController} =require('../controllers/userController.js');
+const { roleController } =require("../controllers/roleController.js");
+const { instrumentController } =require("../controllers/instrumentController.js");
+const { styleController } =require("../controllers/styleController.js");
+const { typeController } =require("../controllers/typeController.js");
+const { announcementController}  =require("../controllers/announcementController.js");
+const { authController } =require("../controllers/authController.js");
 
 
 const router = Router();
@@ -15,10 +15,10 @@ const router = Router();
 router.post('/login', authController.login);
 
 // Protected Routes: 
-// router.get('/users', authController.authorize, userController.getUsers);
-// router.get('/users/:id', authController.authorize, userController.getUserById);
-// router.put('/users/:id', authController.authorize, userController.updateUser);
-// router.delete('/users/:id', authController.authorize, userController.deleteUser);
+router.get('/users', authController.authorize, userController.getUsers);
+router.get('/users/:id', authController.authorize, userController.getUserById);
+router.put('/users/:id', authController.authorize, userController.updateUser);
+router.delete('/users/:id',authController.authorize, userController.deleteUser);
 
 // router.post('/announcements/', authController.authorize, announcementController.createAnnouncement);
 // router.put('/announcements/:id', authController.authorize, announcementController.updateAnnouncement);
@@ -30,11 +30,12 @@ router.post('/contactannouncement', authController.authorize, contactController.
 router.post('/contactadmin', contactController.contactAdmin);
 
 // Routes pour les Users : 
-router.get('/users', userController.getUsers);
-router.get('/users/:id', userController.getUserById);
+
+//router.get('/users', userController.getUsers);
+//router.get('/users/:id', userController.getUserById);
 router.post('/users', userController.createUser);
-router.put('/users/:id', userController.updateUser);
-router.delete('/users/:id', userController.deleteUser);
+//router.put('/users/:id', userController.updateUser);
+//router.delete('/users/:id', userController.deleteUser);
 
 // Routes pour les Roles : 
 router.get('/roles', roleController.getRoles);
@@ -72,6 +73,6 @@ router.put('/announcements/:id', announcementController.updateAnnouncement);
 router.delete('/announcements/:id', announcementController.deleteAnnouncement);
 
 
-export default router;
+module.exports = router;
 
 

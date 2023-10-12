@@ -1,5 +1,5 @@
-import sequelize from "sequelize";
-import db from "../db/db.js"
+const sequelize =require( "sequelize");
+const db = require("../db/db.js");
 
 const { DataTypes } = sequelize;
 
@@ -19,4 +19,4 @@ const Instrument = db.define("instruments", {
     }
 );
 
-export default Instrument;
+module.exports = Instrument;

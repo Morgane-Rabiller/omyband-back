@@ -1,5 +1,5 @@
-import sequelize from "sequelize";
-import db from "../db/db.js"
+const sequelize = require( "sequelize");
+const db = require( "../db/db.js")
 
 const { DataTypes } = sequelize;
 
@@ -23,4 +23,4 @@ const Style = db.define("styles", {
     }
 );
 
-export default Style;
+module.exports = Style;

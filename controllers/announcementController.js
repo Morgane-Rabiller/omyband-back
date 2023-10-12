@@ -1,15 +1,17 @@
-import Announcement from "../models/announcementModel.js";
+const { Announcement } = require("../models/associations.js");
 
 const announcementController = {
     getAnnouncement: async (req, res) => {
         try {
-            const announcements = await Announcement.findAll()
+            const announcements = await Announcement.findAll({
+                include : ['type','user','instruments','styles']
+            })
             if (announcements) {
                 return res.status(200).json(announcements);
             } else {
                 return res.status(500).json({ message: "Announcements not return"});
             }
-        } catch(error) {
+        } catch (error) {
             res.status(500).json({message : 'default in Announcement route', error: error});
         }
     },
@@ -17,7 +19,6 @@ const announcementController = {
             const announcementId = parseInt(req.params.id, 10);
             try {
                 const announcement = await announcementController.findAnnouncementById(announcementId);
-
                 if(announcement) {
                     return res.status(200).json(announcement);
                 } else {
@@ -66,8 +67,8 @@ const announcementController = {
         console.log(announcementId);
         try {
             const announcement = await Announcement.findByPk(announcementId, {
-                attributes : {exclude : ["createdAt", "updatedAt"]},
-                include: ['user']
+                    attributes : {exclude : ["createdAt", "updatedAt"]},
+                    include : ['type','user','instruments','styles']
             });
             return announcement;
         } catch (error) {
@@ -76,4 +77,4 @@ const announcementController = {
     },
 }
 
-export {announcementController};
+module.exports = {announcementController};

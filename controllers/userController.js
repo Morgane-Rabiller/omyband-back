@@ -1,11 +1,16 @@
-import User from "../models/userModel.js";
-import bcrypt from 'bcrypt';
+const { User} =require( "../models/associations.js");
+const bcrypt =require( 'bcrypt');
 
 const userController = {
     
     getUsers: async (req, res) => {
         try{
-            const users = await User.findAll({attributes : {exclude : ["createdAt", "updatedAt"]}})
+            const users = await User.findAll({
+                attributes: {
+                    exclude: ["createdAt", "updatedAt"]
+                },
+                include:['role','instrument']
+            })
             if(users) {
                 return res.status(200).json(users);
             } else {
@@ -21,7 +26,7 @@ const userController = {
         try {
             const user = await User.findByPk(userId, {
                 attributes : {exclude : ["createdAt", "updatedAt"]},
-                include: ['role']
+                include:['role','instrument']
             });
             if(user) {
                 return res.status(200).json(user);
@@ -69,4 +74,4 @@ const userController = {
     }
 };
 
-export { userController };
+module.exports = { userController };

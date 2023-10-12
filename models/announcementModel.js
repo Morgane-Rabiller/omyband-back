@@ -1,6 +1,6 @@
 
-import sequelize from "sequelize";
-import db from "../db/db.js"
+const sequelize =require( "sequelize");
+const db = require("../db/db.js");
 
 const { DataTypes } = sequelize;
 
@@ -44,4 +44,4 @@ const Announcement = db.define("announcements", {
     updatedAt: 'updated_at'
 });
 
-export default Announcement;
+module.exports = Announcement;
