@@ -1,5 +1,5 @@
-import sequelize from "sequelize";
-import db from "../db/db.js"
+const sequelize =require( "sequelize");
+const db = require("../db/db.js");
 
 const { DataTypes } = sequelize;
 
@@ -17,6 +17,4 @@ const Role = db.define("roles", {
     {
     timestamps: false
     }
-);
-
-export default Role;
+);module.exports = Role;

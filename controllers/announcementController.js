@@ -1,7 +1,4 @@
-//import Announcement from "../models/announcementModel.js";
-//import User from "../models/userModel.js";
-//import Role from "../models/roleModel.js";
-import {Announcement} from "../models/associations.js"
+const { Announcement } = require("../models/associations.js");
 
 const announcementController = {
     getAnnouncement: async (req, res) => {
@@ -15,7 +12,6 @@ const announcementController = {
                 return res.status(500).json({ message: "Announcements not return"});
             }
         } catch (error) {
-            console.log(error)
             res.status(500).json({message : 'default in Announcement route', error: error});
         }
     },
@@ -71,4 +67,4 @@ const announcementController = {
     }
 }
 
-export {announcementController}
+module.exports = {announcementController}

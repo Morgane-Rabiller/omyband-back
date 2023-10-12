@@ -1,5 +1,5 @@
-import sequelize from "sequelize";
-import db from "../db/db.js"
+const sequelize =require("sequelize");
+const db = require("../db/db.js");
 
 const { DataTypes } = sequelize;
 
@@ -57,4 +57,4 @@ const User = db.define("users", {
     updatedAt: 'updated_at'
 });
 
-export default User;
+module.exports = User;

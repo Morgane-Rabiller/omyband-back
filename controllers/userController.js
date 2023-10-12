@@ -1,6 +1,5 @@
-import { User} from "../models/associations.js";
-//import User from "../models/userModel.js";
-import bcrypt from 'bcrypt';
+const { User} =require( "../models/associations.js");
+const bcrypt =require( 'bcrypt');
 
 const userController = {
     
@@ -18,7 +17,6 @@ const userController = {
                 return res.status(500).json({ message: "Users non retournés"});
             }
         } catch (error) {
-            console.log(error)
             res.status(500).json({message : 'default in Users route', error: error});
         }
     },
@@ -76,4 +74,4 @@ const userController = {
     }
 };
 
-export { userController };
+module.exports = { userController };

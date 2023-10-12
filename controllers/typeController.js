@@ -1,4 +1,4 @@
-import Type from "../models/typeModel.js";
+const Type =require( "../models/typeModel.js");
 
 const typeController = {
     getTypes: async (req, res) => {
@@ -63,4 +63,4 @@ const typeController = {
     }
 };
 
-export { typeController };
+module.exports = { typeController };

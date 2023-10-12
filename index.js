@@ -1,9 +1,9 @@
-import 'dotenv/config';
-import router from './router/index.js'
-import express from 'express';
-import db from './db/db.js';
-import { User, Role } from './models/associations.js'
-import cors from 'cors';
+require('dotenv').config()
+const router =require ('./router/index.js')
+const express = require( 'express');
+const db = require( './db/db.js');
+//const { User, Role } = require('./models/associations.js');
+const cors = require( 'cors');
 
 const port = process.env.PORT || 8080;
 const app = express();

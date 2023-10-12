@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "dev": "nodemon index.js",
-    "resetDB": "psql -U omyband -d omyband -f data/create_tables.sql && psql -U omyband -d omyband -f data/seeding.sql"
+    "resetDB": "psql -U omyband -d omyband -f data/create_tables.sql && psql -U omyband -d omyband -f data/seeding.sql",
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
@@ -22,6 +22,8 @@
     "sequelize": "^6.33.0"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.23.2",
+    "jest": "^29.7.0",
     "nodemon": "^3.0.1"
   }
 }

@@ -1,4 +1,4 @@
-import Instrument from "../models/instrumentModel.js";
+const Instrument = require( "../models/instrumentModel.js");
 
 const instrumentController = {
     getInstruments: async (req, res) => {
@@ -63,4 +63,4 @@ const instrumentController = {
     }
 };
 
-export { instrumentController };
+module.exports = { instrumentController };

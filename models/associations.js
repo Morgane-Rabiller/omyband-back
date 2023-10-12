@@ -1,9 +1,9 @@
-import User from "./userModel.js";
-import Role from "./roleModel.js";
-import Announcement from "./announcementModel.js";
-import Type from "./typeModel.js";
-import Instruments from "./instrumentModel.js"
-import Style from './styleModel.js'
+const User =require( "./userModel.js");
+const Role =require( "./roleModel.js");
+const Announcement =require( "./announcementModel.js");
+const Type =require( "./typeModel.js");
+const Instruments = require("./instrumentModel.js");
+const Style = require('./styleModel.js');
 
 // Assiociation User -> Role
 User.belongsTo(Role, {
@@ -82,4 +82,4 @@ Style.belongsToMany(Announcement, {
 });
 
 
-export { User, Role, Announcement, Instruments, Style };
+module.exports = { User, Role, Announcement, Instruments, Style };

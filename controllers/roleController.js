@@ -1,4 +1,4 @@
-import Role from "../models/roleModel.js";
+const Role =require( "../models/roleModel.js");
 
 const roleController = {
     getRoles: async (req, res) => {
@@ -63,4 +63,4 @@ const roleController = {
     }
 };
 
-export { roleController };
+module.exports = { roleController };

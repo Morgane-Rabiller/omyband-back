@@ -1,4 +1,4 @@
-import Style from "../models/styleModel.js";
+const Style =require( "../models/styleModel.js");
 
 const styleController = {
     getStyles: async (req, res) => {
@@ -63,4 +63,4 @@ const styleController = {
     }
 };
 
-export { styleController };
+module.exports = { styleController };
