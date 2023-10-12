@@ -18,10 +18,7 @@ const announcementController = {
     getAnnouncementById : async (req, res) => {
             const announcementId = parseInt(req.params.id, 10);
             try {
-                const announcement = await Announcement.findByPk(announcementId, {
-                    attributes : {exclude : ["createdAt", "updatedAt"]},
-                    include : ['type','user','instruments','styles']
-                });
+                const announcement = await announcementController.findAnnouncementById(announcementId);
                 if(announcement) {
                     return res.status(200).json(announcement);
                 } else {
@@ -64,7 +61,20 @@ const announcementController = {
         } catch (error) {
             res.status(500).json(error);
         }
-    }
+    },
+
+    findAnnouncementById: async (announcementId) => {
+        console.log(announcementId);
+        try {
+            const announcement = await Announcement.findByPk(announcementId, {
+                    attributes : {exclude : ["createdAt", "updatedAt"]},
+                    include : ['type','user','instruments','styles']
+            });
+            return announcement;
+        } catch (error) {
+            return res.status(500).json({message : 'default in Announcement route', error: error});
+        }
+    },
 }
 
-module.exports = {announcementController}
+module.exports = {announcementController};

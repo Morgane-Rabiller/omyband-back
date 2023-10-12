@@ -42,7 +42,7 @@ login: async (req, res) => {
         );
     },
 
-    // Middelware d'authorisation pour les routes protégées. 
+    // Middleware d'authorisation pour les routes protégées. 
     // Hearder necessaire : authorization
     // Format : "bearer + ' ' + accessToken"
     authorize: async (req, res, next) => {

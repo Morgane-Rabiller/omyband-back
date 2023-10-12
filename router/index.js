@@ -1,3 +1,4 @@
+
 const { Router } =require("express");
 const { userController} =require('../controllers/userController.js');
 const { roleController } =require("../controllers/roleController.js");
@@ -19,10 +20,14 @@ router.get('/users/:id', authController.authorize, userController.getUserById);
 router.put('/users/:id', authController.authorize, userController.updateUser);
 router.delete('/users/:id',authController.authorize, userController.deleteUser);
 
-// router.post('/announcements/',authController.authorize, announcementController.createAnnouncement);
-// router.put('/announcements/:id',authController.authorize, announcementController.updateAnnouncement);
-// router.delete('/announcements/:id',authController.authorize, announcementController.deleteAnnouncement);
+// router.post('/announcements/', authController.authorize, announcementController.createAnnouncement);
+// router.put('/announcements/:id', authController.authorize, announcementController.updateAnnouncement);
+// router.delete('/announcements/:id', authController.authorize, announcementController.deleteAnnouncement);
 
+
+//Routes de Contact : 
+router.post('/contactannouncement', authController.authorize, contactController.contactAnnouncement);
+router.post('/contactadmin', contactController.contactAdmin);
 
 // Routes pour les Users : 
 
