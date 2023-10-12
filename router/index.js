@@ -6,6 +6,7 @@ import { styleController } from "../controllers/styleController.js";
 import { typeController } from "../controllers/typeController.js";
 import { announcementController}  from "../controllers/announcementController.js";
 import { authController } from "../controllers/authController.js";
+import { contactController } from "../controllers/contactMailController.js";
 
 
 const router = Router();
@@ -23,6 +24,10 @@ router.post('/login', authController.login);
 // router.put('/announcements/:id', authController.authorize, announcementController.updateAnnouncement);
 // router.delete('/announcements/:id', authController.authorize, announcementController.deleteAnnouncement);
 
+
+//Routes de Contact : 
+router.post('/contactannouncement', authController.authorize, contactController.contactAnnouncement);
+router.post('/contactadmin', contactController.contactAdmin);
 
 // Routes pour les Users : 
 router.get('/users', userController.getUsers);
