@@ -12,7 +12,7 @@ const User = db.define("users", {
     role_id : {
         type : DataTypes.INTEGER,
         references : {
-            model: 'roleModel',
+            model: 'roles',
             key: 'role_id'
         },
         defaultValue: 2,

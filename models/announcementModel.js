@@ -13,21 +13,21 @@ const Announcement = db.define("announcements", {
     user_id: {
         type: DataTypes.INTEGER,
         references: {
-            model: 'userModel',
+            model: 'users',
             key:'user_id'
         },
     },
     user_type : {
         type: DataTypes.INTEGER,
         references: {
-            model: 'typeModel',
+            model: 'types',
             key:'type_id'
         },
     },
     research_type : {
         type: DataTypes.INTEGER,
         references: {
-            model: 'typeModel',
+            model: 'types',
             key:'type_id'
         },
     },

@@ -1,7 +1,6 @@
 
 const express = require("express");
 const userController =require('../controllers/userController.js');
-const roleController =require("../controllers/roleController.js");
 const instrumentController =require("../controllers/instrumentController.js");
 const styleController =require("../controllers/styleController.js");
 const typeController =require("../controllers/typeController.js");
@@ -11,14 +10,185 @@ const authController =require("../controllers/authController.js");
 
 const router = express.Router();
 
+const roleRouter = require('./modules/rolesRouter.js');
 
-// Route de log In :
+router.use('/', roleRouter);
+
+//? Route de log In :
+/**
+ * @swagger
+ * /login:
+ *   post:
+ *     summary: Log in for user
+ *     tags: [Auth]
+ *     requestBody:
+ *       description: Login credentials
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Login'
+ *     responses:
+ *       200:
+ *         description: Successful login
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Success Message
+ *                 accessToken:
+ *                   type: string
+ *                   description: accessToken with user data
+ *       401:
+ *         description: Invalid credentials
+ *       500:
+ *         description: Internal server error
+ */
 router.post('/login', authController.login);
 
+//? USER ROUTES
+/**
+ * @swagger
+ * /users:
+ *   post:
+ *     summary: Create a new user
+ *     tags: [Users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/CreateUser'
+ *     responses:
+ *       201:
+ *         description: User created successfully
+ *       400:
+ *         description: Bad request (invalid input)
+ *       500:
+ *         description: Internal server error
+ */
+router.post('/users', userController.createUser);
+
 // Protected Routes: 
+/**
+ * @swagger
+ *  /users:
+ *    get:
+ *      summary: Get all users
+ *      tags: [Users]
+ *      security:
+ *        - BearerAuth: []
+ *      responses:
+ *        200:
+ *          description: List of Users
+ *          content:
+ *            application/json:
+ *              schema: 
+ *                type: array
+ *                items:
+ *                  $ref: '#/components/schemas/Users'
+ *        401:
+ *          description: Unauthorized
+ *        500:
+ *          description: Internal server error
+ */
 router.get('/users', authController.authorize, userController.getUsers);
+/**
+ * @swagger
+ *  /users/{id}:
+ *    get:
+ *      summary: Get all users
+ *      tags: [Users]
+ *      security:
+ *        - BearerAuth: []
+ *      parameters:
+ *        - in: path
+ *          name: id
+ *          required: true
+ *          description: ID of the user to update
+ *          schema:
+ *            type: integer
+ *      responses:
+ *        200:
+ *          description: List of Users
+ *          content:
+ *            application/json:
+ *              schema: 
+ *                type: array
+ *                items:
+ *                  $ref: '#/components/schemas/User'
+ *        401:
+ *          description: Unauthorized
+ *        500:
+ *          description: Internal server error
+ */
 router.get('/users/:id', authController.authorize, userController.getUserById);
+/**
+ * @swagger
+ * /users/{id}:
+ *   put:
+ *     summary: Update a user
+ *     tags: [Users]
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the user to update
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Users'
+ *     responses:
+ *       200:
+ *         description: User updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       400:
+ *         description: Bad request, validation error
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Internal server error
+ */
 router.put('/users/:id', authController.authorize, userController.updateUser);
+/**
+ * @swagger
+ * /users/{id}:
+ *   delete:
+ *     summary: Delete a user
+ *     tags: [Users]
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the user to delete
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: User deleted successfully
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Internal server error
+ */
 router.delete('/users/:id',authController.authorize, userController.deleteUser);
 
 // router.post('/announcements/', authController.authorize, announcementController.createAnnouncement);
@@ -30,20 +200,6 @@ router.delete('/users/:id',authController.authorize, userController.deleteUser);
 // router.post('/contactannouncement', authController.authorize, authController.contactAnnouncement);
 // router.post('/contactadmin', authController.contactAdmin);
 
-// Routes pour les Users : 
-
-//router.get('/users', userController.getUsers);
-//router.get('/users/:id', userController.getUserById);
-router.post('/users', userController.createUser);
-//router.put('/users/:id', userController.updateUser);
-//router.delete('/users/:id', userController.deleteUser);
-
-// Routes pour les Roles : 
-router.get('/roles', roleController.getRoles);
-router.get('/roles/:id', roleController.getRoleById);
-router.post('/roles', roleController.createRole);
-router.put('/roles/:id', roleController.updateRole);
-router.delete('/roles/:id', roleController.deleteRole);
 
 // Routes pour les instruments : 
 router.get('/instruments', instrumentController.getInstruments);
