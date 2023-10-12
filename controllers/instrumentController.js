@@ -63,4 +63,4 @@ const instrumentController = {
     }
 };
 
-module.exports = { instrumentController };
+module.exports = instrumentController;

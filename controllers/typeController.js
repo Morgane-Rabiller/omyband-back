@@ -63,4 +63,4 @@ const typeController = {
     }
 };
 
-module.exports = { typeController };
+module.exports = typeController;

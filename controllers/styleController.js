@@ -63,4 +63,4 @@ const styleController = {
     }
 };
 
-module.exports = { styleController };
+module.exports = styleController;

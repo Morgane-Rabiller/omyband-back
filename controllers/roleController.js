@@ -63,4 +63,4 @@ const roleController = {
     }
 };
 
-module.exports = { roleController };
+module.exports = roleController;

@@ -67,4 +67,4 @@ login: async (req, res) => {
 };
 
 
-module.exports = {authController};
+module.exports = authController;

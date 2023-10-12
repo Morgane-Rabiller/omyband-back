@@ -1,10 +1,10 @@
-const { Announcement } = require("../models/associations.js");
+const {Announcement} =require( "../models/associations.js");
 
 const announcementController = {
     getAnnouncement: async (req, res) => {
         try {
             const announcements = await Announcement.findAll({
-                include : ['type','user','instruments','styles']
+                include : ['user','instruments','styles']
             })
             if (announcements) {
                 return res.status(200).json(announcements);
@@ -12,6 +12,7 @@ const announcementController = {
                 return res.status(500).json({ message: "Announcements not return"});
             }
         } catch (error) {
+            console.log(error);
             res.status(500).json({message : 'default in Announcement route', error: error});
         }
     },
@@ -68,7 +69,7 @@ const announcementController = {
         try {
             const announcement = await Announcement.findByPk(announcementId, {
                     attributes : {exclude : ["createdAt", "updatedAt"]},
-                    include : ['type','user','instruments','styles']
+                    include : ['user','instruments','styles']
             });
             return announcement;
         } catch (error) {
@@ -77,4 +78,4 @@ const announcementController = {
     },
 }
 
-module.exports = {announcementController};
+module.exports = announcementController;

@@ -17,7 +17,7 @@ const corsOptions = {
     preflightContinue: false,
     allowedHeaders: "Content-Type, Authorization, X-Requested-With",
 };
-  
+
 app.use(cors(corsOptions));
 
 app.use(router);

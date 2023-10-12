@@ -1,15 +1,16 @@
 
-const { Router } =require("express");
-const { userController} =require('../controllers/userController.js');
-const { roleController } =require("../controllers/roleController.js");
-const { instrumentController } =require("../controllers/instrumentController.js");
-const { styleController } =require("../controllers/styleController.js");
-const { typeController } =require("../controllers/typeController.js");
-const { announcementController}  =require("../controllers/announcementController.js");
-const { authController } =require("../controllers/authController.js");
+const express = require("express");
+const userController =require('../controllers/userController.js');
+const roleController =require("../controllers/roleController.js");
+const instrumentController =require("../controllers/instrumentController.js");
+const styleController =require("../controllers/styleController.js");
+const typeController =require("../controllers/typeController.js");
+const announcementController =require("../controllers/announcementController.js");
+const authController =require("../controllers/authController.js");
 
 
-const router = Router();
+const router = express.Router();
+
 
 // Route de log In :
 router.post('/login', authController.login);
@@ -26,8 +27,8 @@ router.delete('/users/:id',authController.authorize, userController.deleteUser);
 
 
 //Routes de Contact : 
-router.post('/contactannouncement', authController.authorize, contactController.contactAnnouncement);
-router.post('/contactadmin', contactController.contactAdmin);
+// router.post('/contactannouncement', authController.authorize, authController.contactAnnouncement);
+// router.post('/contactadmin', authController.contactAdmin);
 
 // Routes pour les Users : 
 

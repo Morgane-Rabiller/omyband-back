@@ -1,4 +1,4 @@
-const { User} =require( "../models/associations.js");
+const {User} =require( "../models/associations.js");
 const bcrypt =require( 'bcrypt');
 
 const userController = {
@@ -74,4 +74,4 @@ const userController = {
     }
 };
 
-module.exports = { userController };
+module.exports = userController;
