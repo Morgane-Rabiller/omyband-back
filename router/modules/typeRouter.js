@@ -13,6 +13,8 @@ const router = express.Router();
  *   get:
  *     summary: Get all types
  *     tags: [Types]
+ *     security:
+ *       - BearerAuth: []
  *     responses:
  *       200:
  *         description: An array of types
@@ -25,7 +27,7 @@ const router = express.Router();
  *       500:
  *         description: Internal server error
  */
-router.get('/types', typeController.getTypes);
+router.get('/types', authController.authorize, typeController.getTypes);
 
 /**
  * @swagger
@@ -33,6 +35,8 @@ router.get('/types', typeController.getTypes);
  *   get:
  *     summary: Get a type by ID
  *     tags: [Types]
+ *     security:
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -52,7 +56,7 @@ router.get('/types', typeController.getTypes);
  *       500:
  *         description: Internal server error
  */
-router.get('/types/:id', typeController.getTypeById);
+router.get('/types/:id', authController.authorize, typeController.getTypeById);
 
 /**
  * @swagger
@@ -60,6 +64,8 @@ router.get('/types/:id', typeController.getTypeById);
  *   post:
  *     summary: Create a new type
  *     tags: [Types]
+ *     security:
+ *       - BearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -78,7 +84,7 @@ router.get('/types/:id', typeController.getTypeById);
  *       500:
  *         description: Internal server error
  */
-router.post('/types', typeController.createType);
+router.post('/types', authController.authorize, typeController.createType);
 
 /**
  * @swagger
@@ -86,6 +92,8 @@ router.post('/types', typeController.createType);
  *   put:
  *     summary: Update a type by ID
  *     tags: [Types]
+ *     security:
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -113,7 +121,7 @@ router.post('/types', typeController.createType);
  *       500:
  *         description: Internal server error
  */
-router.put('/types/:id', typeController.updateType);
+router.put('/types/:id', authController.authorize, typeController.updateType);
 
 /**
  * @swagger
@@ -121,6 +129,8 @@ router.put('/types/:id', typeController.updateType);
  *   delete:
  *     summary: Delete a type by ID
  *     tags: [Types]
+ *     security:
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -136,6 +146,6 @@ router.put('/types/:id', typeController.updateType);
  *       500:
  *         description: Internal server error
  */
-router.delete('/types/:id', typeController.deleteType);
+router.delete('/types/:id', authController.authorize, typeController.deleteType);
 
 module.exports = router;

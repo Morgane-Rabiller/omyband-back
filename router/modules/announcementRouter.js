@@ -58,6 +58,8 @@ router.get('/announcements/:id', announcementController.getAnnouncementById);
  *   post:
  *     summary: Create a new announcement
  *     tags: [Announcements]
+ *     security:
+ *       - BearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -76,7 +78,7 @@ router.get('/announcements/:id', announcementController.getAnnouncementById);
  *       500:
  *         description: Internal server error
  */
-router.post('/announcements/', announcementController.createAnnouncement);
+router.post('/announcements/', authController.authorize, announcementController.createAnnouncement);
 
 /**
  * @swagger
@@ -84,6 +86,8 @@ router.post('/announcements/', announcementController.createAnnouncement);
  *   put:
  *     summary: Update an announcement by ID
  *     tags: [Announcements]
+ *     security:
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -111,7 +115,7 @@ router.post('/announcements/', announcementController.createAnnouncement);
  *       500:
  *         description: Internal server error
  */
-router.put('/announcements/:id', announcementController.updateAnnouncement);
+router.put('/announcements/:id', authController.authorize, announcementController.updateAnnouncement);
 
 /**
  * @swagger
@@ -119,6 +123,8 @@ router.put('/announcements/:id', announcementController.updateAnnouncement);
  *   delete:
  *     summary: Delete an announcement by ID
  *     tags: [Announcements]
+ *     security:
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -134,11 +140,6 @@ router.put('/announcements/:id', announcementController.updateAnnouncement);
  *       500:
  *         description: Internal server error
  */
-router.delete('/announcements/:id', announcementController.deleteAnnouncement);
-
-// router.post('/announcements/', authController.authorize, announcementController.createAnnouncement);
-// router.put('/announcements/:id', authController.authorize, announcementController.updateAnnouncement);
-// router.delete('/announcements/:id', authController.authorize, announcementController.deleteAnnouncement);
-
+router.delete('/announcements/:id', authController.authorize, announcementController.deleteAnnouncement);
 
 module.exports = router;
