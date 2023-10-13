@@ -137,7 +137,6 @@ router.put('/announcements/:id', announcementController.updateAnnouncement);
 router.delete('/announcements/:id', announcementController.deleteAnnouncement);
 
 // router.post('/announcements/', authController.authorize, announcementController.createAnnouncement);
-
 // router.put('/announcements/:id', authController.authorize, announcementController.updateAnnouncement);
 // router.delete('/announcements/:id', authController.authorize, announcementController.deleteAnnouncement);
 

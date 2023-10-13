@@ -18,7 +18,7 @@ Role.hasMany(User, {
 
 //Associations  Users-> Instruments
 User.belongsToMany(Instruments, {
-    as : "instrument",
+    as : "instruments",
     through: 'users_instruments',
     foreignKey: 'user_id',
     otherKey : 'instrument_id',
@@ -46,7 +46,7 @@ Announcement.belongsTo(User, {
 Announcement.belongsTo(Type, {
     foreignKey: 'user_type',
     targetKey: 'type_id',
-    as: 'userType'
+    as: ''
 });
 Type.hasMany(Announcement, {
     foreignKey: 'user_type',

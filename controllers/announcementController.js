@@ -32,8 +32,7 @@ const announcementController = {
     createAnnouncement: async (req, res) => {
         const { body } = req;
         try {
-            const announcement = await Announcement.create(
-                {...body});
+            const announcement = await Announcement.create({...body});
                 if (body.instruments) {
                     body.instruments.forEach(instrument => {
                         announcement.setInstruments(instrument.instrument_id);

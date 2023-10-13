@@ -9,7 +9,7 @@ const userController = {
                 attributes: {
                     exclude: ["createdAt", "updatedAt", 'password']
                 },
-                include:['role','instrument']
+                include:['role','instruments']
             })
             if(users) {
                 return res.status(200).json(users);
@@ -26,7 +26,7 @@ const userController = {
         try {
             const user = await User.findByPk(userId, {
                 attributes : {exclude : ['createdAt', 'updatedAt', 'password']},
-                include:['role','instrument', 'announcements']
+                include:['role','instruments', 'announcements']
             });
             if(user) {
                 return res.status(200).json(user);
@@ -42,9 +42,16 @@ const userController = {
         const { body } = req;
         try {
             const hashedPassword = await bcrypt.hash(body.password, 10);
-            const user = await User.create({ ...body, password: hashedPassword })
+            const user = await User.create({ ...body, password: hashedPassword });
+            if (body.instruments) {
+                body.instruments.forEach(instrument => {
+                    user.setInstruments(instrument.instrument_id);
+                });
+            }
             return res.status(201).json({message : "Utilisateur créé", user});
         } catch (error) {
+            
+            console.log(error);
             return res.status(500).json({message : 'default in User Creation route', error: error});
         }
     },

@@ -73,6 +73,15 @@
  *           description: Additional description about the user.
  *           nullable: true
  *           maxLength: 1000
+ *         instruments:
+ *           type: array
+ *           items:
+ *             type: object
+ *             properties:
+ *               instrument_id:
+ *                 type: integer
+ *           description: An array of instrument IDs associated with the announcement.
+ * 
  *  
  *     User:
  *       type: object
@@ -238,16 +247,22 @@
  *         research_type:
  *           type: integer
  *           description: The ID representing the type of research associated with the announcement.
- *         instruments_ids:
+ *         instruments:
  *           type: array
  *           items:
- *             type: integer
+ *             type: object
+ *             properties:
+ *               instrument_id:
+ *                 type: integer
  *           description: An array of instrument IDs associated with the announcement.
- *         styles_ids:
+ *         styles:
  *           type: array
  *           items:
- *             type: integer
- *           description: An array of style IDs associated with the announcement.
+ *             type: object
+ *             properties:
+ *               style_id:
+ *                 type: integer
+ *           description: An array of instrument IDs associated with the announcement.
  *  
  *     Instrument:
  *       type: object
@@ -284,7 +299,7 @@
  *       example:
  *         style_id: 1
  *         name: Jazz
- *         image: https://example.com/images/jazz.jpg
+ *         image: images/jazz.jpg
  *  
  *     Type:
  *       type: object
