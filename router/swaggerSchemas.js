@@ -217,8 +217,6 @@
  *           type: array
  *           items:
  *             $ref: '#/components/schemas/Style'
- *         type:
- *           $ref: '#/components/schemas/Type'
  *  
  *     CreateAnnouncement:
  *       type: object
@@ -250,11 +248,6 @@
  *           items:
  *             type: integer
  *           description: An array of style IDs associated with the announcement.
- *         type_ids:
- *           type: array
- *           items:
- *             type: integer
- *           description: An array of type IDs associated with the announcement.
  *  
  *     Instrument:
  *       type: object
