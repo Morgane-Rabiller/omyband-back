@@ -32,9 +32,21 @@ const announcementController = {
     createAnnouncement: async (req, res) => {
         const { body } = req;
         try {
-            const announcement = await Announcement.create({...body})
+            const announcement = await Announcement.create(
+                {...body});
+                if (body.instruments) {
+                    body.instruments.forEach(instrument => {
+                        announcement.setInstruments(instrument.instrument_id);
+                    });
+                }
+                if (body.styles) {
+                    body.styles.forEach(style => {
+                        announcement.setStyles(style.style_id);
+                    });
+                }
             return res.status(201).json({ message: "Announcement created", announcement })
         } catch (error) {
+            console.log(error);
             return res.status(500).json({ message: 'default in Announcement Creation route', error: error });
             
         }
@@ -69,7 +81,7 @@ const announcementController = {
         try {
             const announcement = await Announcement.findByPk(announcementId, {
                     attributes : {exclude : ["createdAt", "updatedAt"]},
-                    include : ['user','instruments','styles', 'type']
+                    include : ['user','instruments','styles', 'userType', 'researchType']
             });
             return announcement;
         } catch (error) {
