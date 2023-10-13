@@ -15,6 +15,7 @@ const announcementController = {
             console.log(error);
             res.status(500).json({message : 'default in Announcement route', error: error});
         }
+        //!! TODO : Filtres et Pagination !
     },
     getAnnouncementById : async (req, res) => {
             const announcementId = parseInt(req.params.id, 10);

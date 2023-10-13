@@ -30,6 +30,7 @@ login: async (req, res) => {
         return jwt.sign(
             {
                 data: {
+                    user_id: user.user_id,
                     email: user.email,
                     // role: user.role,
                     pseudo: user.pseudo,

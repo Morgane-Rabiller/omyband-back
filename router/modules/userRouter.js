@@ -79,7 +79,7 @@ router.get('/users', authController.authorize, userController.getUsers);
  *        500:
  *          description: Internal server error
  */
-router.get('/users/:id', authController.authorize, userController.getUserById);
+router.get('/users/profil', authController.authorize, userController.getUserById);
 /**
  * @swagger
  * /users/{id}:

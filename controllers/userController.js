@@ -22,8 +22,11 @@ const userController = {
         }
     },
     
+    //!! TODO géré l'id user avec le Token -> la route deviendra /profil
+    //!! Voir pour la consultation du profil d'un autre depuis une annonce 
     getUserById: async (req, res) => {
-        const userId = parseInt(req.params.id, 10);
+        console.log(req.user)
+        const userId = parseInt(req.user.user_id, 10);
         try {
             const user = await User.findByPk(userId, {
                 attributes : {exclude : ['createdAt', 'updatedAt', 'password']},
