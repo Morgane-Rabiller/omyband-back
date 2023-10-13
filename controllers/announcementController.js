@@ -4,7 +4,7 @@ const announcementController = {
     getAnnouncement: async (req, res) => {
         try {
             const announcements = await Announcement.findAll({
-                include : ['user','instruments','styles']
+                include : ['user','instruments','styles', 'userType', 'researchType']
             })
             if (announcements) {
                 return res.status(200).json(announcements);
@@ -69,7 +69,7 @@ const announcementController = {
         try {
             const announcement = await Announcement.findByPk(announcementId, {
                     attributes : {exclude : ["createdAt", "updatedAt"]},
-                    include : ['user','instruments','styles']
+                    include : ['user','instruments','styles', 'type']
             });
             return announcement;
         } catch (error) {

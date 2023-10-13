@@ -7,14 +7,14 @@ const userController = {
         try{
             const users = await User.findAll({
                 attributes: {
-                    exclude: ["createdAt", "updatedAt"]
+                    exclude: ["createdAt", "updatedAt", 'password']
                 },
                 include:['role','instrument']
             })
             if(users) {
                 return res.status(200).json(users);
             } else {
-                return res.status(500).json({ message: "Users non retournés"});
+                return res.status(404).json({ message: "Users non retournés"});
             }
         } catch (error) {
             res.status(500).json({message : 'default in Users route', error: error});
@@ -25,8 +25,8 @@ const userController = {
         const userId = parseInt(req.params.id, 10);
         try {
             const user = await User.findByPk(userId, {
-                attributes : {exclude : ["createdAt", "updatedAt"]},
-                include:['role','instrument']
+                attributes : {exclude : ['createdAt', 'updatedAt', 'password']},
+                include:['role','instrument', 'announcements']
             });
             if(user) {
                 return res.status(200).json(user);
@@ -53,6 +53,9 @@ const userController = {
         const userId = parseInt(req.params.id, 10);
         try {
             const userToUpdate = await User.findByPk(userId);
+            if (!userToUpdate) {
+                return res.status(404).json('User not found');
+            }
             const { body } = req;
             await userToUpdate.update({...body});
             res.status(201).json({message : "Utilisateur modifié", user: userToUpdate});
@@ -62,9 +65,12 @@ const userController = {
         }
     },
     deleteUser: async (req, res) => {
+        const userId = parseInt(req.params.id, 10);
         try {
-            const userId = parseInt(req.params.id, 10);
             const userToDelete = await User.findByPk(userId);
+            if(!userToDelete) {
+                return res.status(404).json('User not found');
+            }
             await userToDelete.destroy({ where: { user_id: userToDelete } })
             res.status(201).json({message : "Utilisateur supprimé", user: userToDelete});
 
