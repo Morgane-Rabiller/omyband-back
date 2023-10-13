@@ -17,6 +17,7 @@ const userController = {
                 return res.status(404).json({ message: "Users non retournés"});
             }
         } catch (error) {
+            console.log(error);
             res.status(500).json({message : 'default in Users route', error: error});
         }
     },

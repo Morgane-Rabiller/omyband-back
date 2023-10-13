@@ -18,7 +18,7 @@ Role.hasMany(User, {
 
 //Associations  Users-> Instruments
 User.belongsToMany(Instruments, {
-    as : "instrument",
+    as : "instruments",
     through: 'users_instruments',
     foreignKey: 'user_id',
     otherKey : 'instrument_id',
