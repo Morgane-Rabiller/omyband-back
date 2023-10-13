@@ -186,35 +186,75 @@
  *  
  *     Announcement:
  *       type: object
- *       required:
- *         - user_id
- *         - user_type
- *         - research_type
- *         - title
- *         - description
  *       properties:
  *         announcement_id:
  *           type: integer
- *           description: The auto-incremented ID of the announcement.
  *           readOnly: true
  *         user_id:
  *           type: integer
- *           description: The ID of the user who made the announcement.
- *         user:
- *           $ref: '#/components/schemas/User'
  *         user_type:
  *           type: integer
- *           description: The type of the user who made the announcement.
  *         research_type:
  *           type: integer
- *           description: The type of research associated with the announcement.
+ *         title:
+ *           type: string
+ *         description:
+ *           type: string
+ *         created_at:
+ *           type: string
+ *           format: date-time
+ *         updated_at:
+ *           type: string
+ *           format: date-time
+ *           nullable: true
+ *         user:
+ *           $ref: '#/components/schemas/Users'
+ *         instruments:
+ *           type: array
+ *           items:
+ *             $ref: '#/components/schemas/Instrument'
+ *         styles:
+ *           type: array
+ *           items:
+ *             $ref: '#/components/schemas/Style'
+ *         type:
+ *           $ref: '#/components/schemas/Type'
+ *  
+ *     CreateAnnouncement:
+ *       type: object
+ *       required:
+ *         - title
+ *         - description
+ *         - user_type
+ *         - research_type
+ *       properties:
  *         title:
  *           type: string
  *           description: The title of the announcement.
  *         description:
  *           type: string
  *           description: The description of the announcement.
- *           maxLength: 1000
+ *         user_type:
+ *           type: integer
+ *           description: The ID representing the type of the user who made the announcement.
+ *         research_type:
+ *           type: integer
+ *           description: The ID representing the type of research associated with the announcement.
+ *         instruments_ids:
+ *           type: array
+ *           items:
+ *             type: integer
+ *           description: An array of instrument IDs associated with the announcement.
+ *         styles_ids:
+ *           type: array
+ *           items:
+ *             type: integer
+ *           description: An array of style IDs associated with the announcement.
+ *         type_ids:
+ *           type: array
+ *           items:
+ *             type: integer
+ *           description: An array of type IDs associated with the announcement.
  *  
  *     Instrument:
  *       type: object
