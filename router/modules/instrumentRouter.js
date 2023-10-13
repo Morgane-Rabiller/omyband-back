@@ -11,6 +11,8 @@ const router = express.Router();
  *   get:
  *     summary: Get all instruments
  *     tags: [Instruments]
+ *     security:
+ *       - BearerAuth: []
  *     responses:
  *       200:
  *         description: An array of instruments
@@ -23,7 +25,7 @@ const router = express.Router();
  *       500:
  *         description: Internal server error
  */
-router.get('/instruments', instrumentController.getInstruments);
+router.get('/instruments', authController.authorize, instrumentController.getInstruments);
 
 /**
  * @swagger
@@ -31,6 +33,8 @@ router.get('/instruments', instrumentController.getInstruments);
  *   get:
  *     summary: Get an instrument by ID
  *     tags: [Instruments]
+ *     security:
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -50,7 +54,7 @@ router.get('/instruments', instrumentController.getInstruments);
  *       500:
  *         description: Internal server error
  */
-router.get('/instruments/:id', instrumentController.getInstrumentById);
+router.get('/instruments/:id', authController.authorize, instrumentController.getInstrumentById);
 
 /**
  * @swagger
@@ -58,6 +62,8 @@ router.get('/instruments/:id', instrumentController.getInstrumentById);
  *   post:
  *     summary: Create a new instrument
  *     tags: [Instruments]
+ *     security:
+ *       - BearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -76,7 +82,7 @@ router.get('/instruments/:id', instrumentController.getInstrumentById);
  *       500:
  *         description: Internal server error
  */
-router.post('/instruments', instrumentController.createInstrument);
+router.post('/instruments', authController.authorize, instrumentController.createInstrument);
 
 /**
  * @swagger
@@ -84,6 +90,8 @@ router.post('/instruments', instrumentController.createInstrument);
  *   put:
  *     summary: Update an instrument by ID
  *     tags: [Instruments]
+ *     security:
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -111,7 +119,7 @@ router.post('/instruments', instrumentController.createInstrument);
  *       500:
  *         description: Internal server error
  */
-router.put('/instruments/:id', instrumentController.updateInstrument);
+router.put('/instruments/:id', authController.authorize, instrumentController.updateInstrument);
 
 /**
  * @swagger
@@ -119,6 +127,8 @@ router.put('/instruments/:id', instrumentController.updateInstrument);
  *   delete:
  *     summary: Delete an instrument by ID
  *     tags: [Instruments]
+ *     security:
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -134,7 +144,7 @@ router.put('/instruments/:id', instrumentController.updateInstrument);
  *       500:
  *         description: Internal server error
  */
-router.delete('/instruments/:id', instrumentController.deleteInstrument)
+router.delete('/instruments/:id', authController.authorize, instrumentController.deleteInstrument)
 
 
 module.exports = router;

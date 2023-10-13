@@ -11,6 +11,8 @@ const router = express.Router();
  *   get:
  *     summary: Get all styles
  *     tags: [Styles]
+ *     security:
+ *       - BearerAuth: []
  *     responses:
  *       200:
  *         description: An array of styles
@@ -23,7 +25,7 @@ const router = express.Router();
  *       500:
  *         description: Internal server error
  */
-router.get('/styles', styleController.getStyles);
+router.get('/styles', authController.authorize, styleController.getStyles);
 
 /**
  * @swagger
@@ -31,6 +33,8 @@ router.get('/styles', styleController.getStyles);
  *   get:
  *     summary: Get a style by ID
  *     tags: [Styles]
+ *     security:
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -50,7 +54,7 @@ router.get('/styles', styleController.getStyles);
  *       500:
  *         description: Internal server error
  */
-router.get('/styles/:id', styleController.getStyleById);
+router.get('/styles/:id', authController.authorize, styleController.getStyleById);
 
 /**
  * @swagger
@@ -58,6 +62,8 @@ router.get('/styles/:id', styleController.getStyleById);
  *   post:
  *     summary: Create a new style
  *     tags: [Styles]
+ *     security:
+ *       - BearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -76,7 +82,7 @@ router.get('/styles/:id', styleController.getStyleById);
  *       500:
  *         description: Internal server error
  */
-router.post('/styles', styleController.createStyle);
+router.post('/styles', authController.authorize, styleController.createStyle);
 
 /**
  * @swagger
@@ -84,6 +90,8 @@ router.post('/styles', styleController.createStyle);
  *   put:
  *     summary: Update a style by ID
  *     tags: [Styles]
+ *     security:
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -111,7 +119,7 @@ router.post('/styles', styleController.createStyle);
  *       500:
  *         description: Internal server error
  */
-router.put('/styles/:id', styleController.updateStyle);
+router.put('/styles/:id', authController.authorize, styleController.updateStyle);
 
 /**
  * @swagger
@@ -119,6 +127,8 @@ router.put('/styles/:id', styleController.updateStyle);
  *   delete:
  *     summary: Delete a style by ID
  *     tags: [Styles]
+ *     security:
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -134,6 +144,6 @@ router.put('/styles/:id', styleController.updateStyle);
  *       500:
  *         description: Internal server error
  */
-router.delete('/styles/:id', styleController.deleteStyle);
+router.delete('/styles/:id', authController.authorize, styleController.deleteStyle);
 
 module.exports = router;

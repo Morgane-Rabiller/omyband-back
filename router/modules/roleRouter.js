@@ -1,6 +1,6 @@
 const express = require("express");
 const roleController = require("../../controllers/roleController.js");
-
+const authController =require("../../controllers/authController.js");
 const router = express.Router();
 
 //? Routes pour les Roles : 
@@ -10,6 +10,8 @@ const router = express.Router();
  *   get:
  *     summary: Get all roles
  *     tags: [Roles]
+ *     security:
+ *       - BearerAuth: []
  *     responses:
  *       200:
  *         description: A list of roles
@@ -22,13 +24,15 @@ const router = express.Router();
  *       500:
  *         description: Internal server error
  */
-router.get('/roles', roleController.getRoles);
+router.get('/roles', authController.authorize, roleController.getRoles);
 /**
  * @swagger
  * /roles/{id}:
  *   get:
  *     summary: Get a role by ID
  *     tags: [Roles]
+ *     security:
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -48,13 +52,15 @@ router.get('/roles', roleController.getRoles);
  *       500:
  *         description: Internal server error
  */
-router.get('/roles/:id', roleController.getRoleById);
+router.get('/roles/:id', authController.authorize, roleController.getRoleById);
 /**
  * @swagger
  * /roles:
  *   post:
  *     summary: Create a new role
  *     tags: [Roles]
+ *     security:
+ *       - BearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -73,13 +79,15 @@ router.get('/roles/:id', roleController.getRoleById);
  *       500:
  *         description: Internal server error
  */
-router.post('/roles', roleController.createRole);
+router.post('/roles', authController.authorize, roleController.createRole);
 /**
  * @swagger
  * /roles/{id}:
  *   put:
  *     summary: Update a role by ID
  *     tags: [Roles]
+ *     security:
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -107,13 +115,15 @@ router.post('/roles', roleController.createRole);
  *       500:
  *         description: Internal server error
  */
-router.put('/roles/:id', roleController.updateRole);
+router.put('/roles/:id', authController.authorize, roleController.updateRole);
 /**
  * @swagger
  * /roles/{id}:
  *   delete:
  *     summary: Delete a role by ID
  *     tags: [Roles]
+ *     security:
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -129,7 +139,7 @@ router.put('/roles/:id', roleController.updateRole);
  *       500:
  *         description: Internal server error
  */
-router.delete('/roles/:id', roleController.deleteRole);
+router.delete('/roles/:id', authController.authorize, roleController.deleteRole);
 
 
 module.exports = router;
