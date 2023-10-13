@@ -42,16 +42,28 @@ Announcement.belongsTo(User, {
     as:'user'
 })
 
-//Associations Annoucement -> Types
+//Associations Annoucement -> user_types
 Announcement.belongsTo(Type, {
     foreignKey: 'user_type',
     targetKey: 'type_id',
-    as: 'type'
+    as: 'userType'
 });
 Type.hasMany(Announcement, {
     foreignKey: 'user_type',
     targetKey: 'type_id',
-    as: 'announcements'
+    as: 'userAnnouncements'
+});
+
+//Associations Annoucement -> research_types
+Announcement.belongsTo(Type, {
+    foreignKey: 'research_type',
+    targetKey: 'type_id',
+    as: 'researchType'
+});
+Type.hasMany(Announcement, {
+    foreignKey: 'research_type',
+    targetKey: 'type_id',
+    as: 'researchAnnouncements'
 });
 
 //Associations Annoucement -> Instrument

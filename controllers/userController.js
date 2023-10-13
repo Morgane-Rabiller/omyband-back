@@ -7,7 +7,7 @@ const userController = {
         try{
             const users = await User.findAll({
                 attributes: {
-                    exclude: ["createdAt", "updatedAt"]
+                    exclude: ["createdAt", "updatedAt", 'password']
                 },
                 include:['role','instrument']
             })
@@ -25,7 +25,7 @@ const userController = {
         const userId = parseInt(req.params.id, 10);
         try {
             const user = await User.findByPk(userId, {
-                attributes : {exclude : ["createdAt", "updatedAt"]},
+                attributes : {exclude : ['createdAt', 'updatedAt', 'password']},
                 include:['role','instrument', 'announcements']
             });
             if(user) {

@@ -4,7 +4,7 @@ const announcementController = {
     getAnnouncement: async (req, res) => {
         try {
             const announcements = await Announcement.findAll({
-                include : ['user','instruments','styles', 'type']
+                include : ['user','instruments','styles', 'userType', 'researchType']
             })
             if (announcements) {
                 return res.status(200).json(announcements);
