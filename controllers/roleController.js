@@ -21,7 +21,7 @@ const roleController = {
             if(role) {
                 return res.status(200).json(role);
             } else {
-                return res.status(404).json('Role not found');Role
+                return res.status(404).json('Role not found');
             }
         } catch (error) {
             return res.status(500).json({message : 'default in Role route', error: error});
