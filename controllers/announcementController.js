@@ -32,8 +32,10 @@ const announcementController = {
     },
     createAnnouncement: async (req, res) => {
         const { body } = req;
+        body.user_id = parseInt(req.user.user_id, 10);
         try {
             const announcement = await Announcement.create({...body});
+                announcement.setUser(body.user_id);
                 if (body.instruments) {
                     body.instruments.forEach(instrument => {
                         announcement.setInstruments(instrument.instrument_id);
