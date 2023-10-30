@@ -17,4 +17,6 @@ const Role = db.define("roles", {
     {
     timestamps: false
     }
-);module.exports = Role;
+);
+
+module.exports = Role;

@@ -1,3 +1,4 @@
+
 const User =require( "./userModel.js");
 const Role =require( "./roleModel.js");
 const Announcement =require( "./announcementModel.js");
@@ -12,12 +13,12 @@ User.belongsTo(Role, {
 });
 Role.hasMany(User, {
     foreignKey: 'role_id',
-    as:'role'
+    as:'user'
 });
 
 //Associations  Users-> Instruments
 User.belongsToMany(Instruments, {
-    as : "instrument",
+    as : "instruments",
     through: 'users_instruments',
     foreignKey: 'user_id',
     otherKey : 'instrument_id',
@@ -34,19 +35,35 @@ Instruments.belongsToMany(User, {
 // Associations Annoucement -> User
 User.hasMany(Announcement, {
     foreignKey: 'user_id',
+    as:'announcements'
 });
 Announcement.belongsTo(User, {
-    foreignKey: 'user_id'
+    foreignKey: 'user_id',
+    as:'user'
 })
 
-//Associations Annoucement -> Types
+//Associations Annoucement -> user_types
 Announcement.belongsTo(Type, {
     foreignKey: 'user_type',
     targetKey: 'type_id',
+    as: 'userType'
 });
 Type.hasMany(Announcement, {
     foreignKey: 'user_type',
-    targetKey: 'type_id'
+    targetKey: 'type_id',
+    as: 'userAnnouncements'
+});
+
+//Associations Annoucement -> research_types
+Announcement.belongsTo(Type, {
+    foreignKey: 'research_type',
+    targetKey: 'type_id',
+    as: 'researchType'
+});
+Type.hasMany(Announcement, {
+    foreignKey: 'research_type',
+    targetKey: 'type_id',
+    as: 'researchAnnouncements'
 });
 
 //Associations Annoucement -> Instrument
@@ -82,4 +99,11 @@ Style.belongsToMany(Announcement, {
 });
 
 
-module.exports = { User, Role, Announcement, Instruments, Style };
+module.exports = {
+    User, 
+    Role, 
+    Announcement, 
+    Type, 
+    Instruments, 
+    Style
+};
