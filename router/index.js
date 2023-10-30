@@ -1,6 +1,10 @@
 
 const express = require("express");
-const authController =require("../controllers/authController.js");
+const authController = require("../controllers/authController.js");
+const handleError = require("../middlewares/handleError.js");
+const APIError = require("../services/APIError.js");
+
+
 
 
 const router = express.Router();
@@ -59,6 +63,7 @@ router.post('/login', authController.login);
 // router.post('/contactannouncement', authController.authorize, authController.contactAnnouncement);
 // router.post('/contactadmin', authController.contactAdmin);
 
+router.use(handleError);
 
 module.exports = router;
 

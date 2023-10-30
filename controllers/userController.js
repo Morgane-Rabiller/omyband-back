@@ -4,7 +4,6 @@ const bcrypt =require( 'bcrypt');
 const userController = {
     
     getUsers: async (req, res) => {
-        try{
             const users = await User.findAll({
                 attributes: {
                     exclude: ["createdAt", "updatedAt", 'password']
@@ -16,10 +15,6 @@ const userController = {
             } else {
                 return res.status(404).json({ message: "Users non retournés"});
             }
-        } catch (error) {
-            console.log(error);
-            res.status(500).json({message : 'default in Users route', error: error});
-        }
     },
     
     getUserById: async (req, res) => {

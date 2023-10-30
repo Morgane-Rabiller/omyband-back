@@ -2,6 +2,8 @@ const express = require("express");
 const styleController = require('../../controllers/styleController.js');
 const authController =require("../../controllers/authController.js");
 const router = express.Router();
+const routerWrapper = require("../../middlewares/routerWrapper.js");
+
 
 //? Routes pour les styles :
 
@@ -25,7 +27,7 @@ const router = express.Router();
  *       500:
  *         description: Internal server error
  */
-router.get('/styles', authController.authorize, styleController.getStyles);
+router.get('/styles', authController.authorize, routerWrapper(styleController.getStyles));
 
 /**
  * @swagger
@@ -54,7 +56,7 @@ router.get('/styles', authController.authorize, styleController.getStyles);
  *       500:
  *         description: Internal server error
  */
-router.get('/styles/:id', authController.authorize, styleController.getStyleById);
+router.get('/styles/:id', authController.authorize, routerWrapper(styleController.getStyleById));
 
 /**
  * @swagger
@@ -82,7 +84,7 @@ router.get('/styles/:id', authController.authorize, styleController.getStyleById
  *       500:
  *         description: Internal server error
  */
-router.post('/styles', authController.authorize, styleController.createStyle);
+router.post('/styles', authController.authorize, routerWrapper(styleController.createStyle));
 
 /**
  * @swagger
@@ -119,7 +121,7 @@ router.post('/styles', authController.authorize, styleController.createStyle);
  *       500:
  *         description: Internal server error
  */
-router.put('/styles/:id', authController.authorize, styleController.updateStyle);
+router.put('/styles/:id', authController.authorize, routerWrapper(styleController.updateStyle));
 
 /**
  * @swagger
@@ -144,6 +146,6 @@ router.put('/styles/:id', authController.authorize, styleController.updateStyle)
  *       500:
  *         description: Internal server error
  */
-router.delete('/styles/:id', authController.authorize, styleController.deleteStyle);
+router.delete('/styles/:id', authController.authorize, routerWrapper(styleController.deleteStyle));
 
 module.exports = router;

@@ -2,6 +2,8 @@ const express = require("express");
 const roleController = require("../../controllers/roleController.js");
 const authController =require("../../controllers/authController.js");
 const router = express.Router();
+const routerWrapper = require("../../middlewares/routerWrapper.js");
+
 
 //? Routes pour les Roles : 
 /**
@@ -24,7 +26,7 @@ const router = express.Router();
  *       500:
  *         description: Internal server error
  */
-router.get('/roles', authController.authorize, roleController.getRoles);
+router.get('/roles', authController.authorize, routerWrapper(roleController.getRoles));
 /**
  * @swagger
  * /roles/{id}:
@@ -52,7 +54,7 @@ router.get('/roles', authController.authorize, roleController.getRoles);
  *       500:
  *         description: Internal server error
  */
-router.get('/roles/:id', authController.authorize, roleController.getRoleById);
+router.get('/roles/:id', authController.authorize, routerWrapper(roleController.getRoleById));
 /**
  * @swagger
  * /roles:
@@ -79,7 +81,7 @@ router.get('/roles/:id', authController.authorize, roleController.getRoleById);
  *       500:
  *         description: Internal server error
  */
-router.post('/roles', authController.authorize, roleController.createRole);
+router.post('/roles', authController.authorize, routerWrapper(roleController.createRole));
 /**
  * @swagger
  * /roles/{id}:
@@ -115,7 +117,7 @@ router.post('/roles', authController.authorize, roleController.createRole);
  *       500:
  *         description: Internal server error
  */
-router.put('/roles/:id', authController.authorize, roleController.updateRole);
+router.put('/roles/:id', authController.authorize, routerWrapper(roleController.updateRole));
 /**
  * @swagger
  * /roles/{id}:
@@ -139,7 +141,7 @@ router.put('/roles/:id', authController.authorize, roleController.updateRole);
  *       500:
  *         description: Internal server error
  */
-router.delete('/roles/:id', authController.authorize, roleController.deleteRole);
+router.delete('/roles/:id', authController.authorize, routerWrapper(roleController.deleteRole));
 
 
 module.exports = router;

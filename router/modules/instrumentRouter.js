@@ -2,6 +2,8 @@ const express = require("express");
 const instrumentController = require('../../controllers/instrumentController.js');
 const authController =require("../../controllers/authController.js");
 const router = express.Router();
+const routerWrapper = require("../../middlewares/routerWrapper.js");
+
 
 //? Routes pour les instruments : 
 
@@ -25,7 +27,7 @@ const router = express.Router();
  *       500:
  *         description: Internal server error
  */
-router.get('/instruments', authController.authorize, instrumentController.getInstruments);
+router.get('/instruments', authController.authorize, routerWrapper(instrumentController.getInstruments));
 
 /**
  * @swagger
@@ -54,7 +56,7 @@ router.get('/instruments', authController.authorize, instrumentController.getIns
  *       500:
  *         description: Internal server error
  */
-router.get('/instruments/:id', authController.authorize, instrumentController.getInstrumentById);
+router.get('/instruments/:id', authController.authorize, routerWrapper(instrumentController.getInstrumentById));
 
 /**
  * @swagger
@@ -82,7 +84,7 @@ router.get('/instruments/:id', authController.authorize, instrumentController.ge
  *       500:
  *         description: Internal server error
  */
-router.post('/instruments', authController.authorize, instrumentController.createInstrument);
+router.post('/instruments', authController.authorize, routerWrapper(instrumentController.createInstrument));
 
 /**
  * @swagger
@@ -119,7 +121,7 @@ router.post('/instruments', authController.authorize, instrumentController.creat
  *       500:
  *         description: Internal server error
  */
-router.put('/instruments/:id', authController.authorize, instrumentController.updateInstrument);
+router.put('/instruments/:id', authController.authorize, routerWrapper(instrumentController.updateInstrument));
 
 /**
  * @swagger
@@ -144,7 +146,7 @@ router.put('/instruments/:id', authController.authorize, instrumentController.up
  *       500:
  *         description: Internal server error
  */
-router.delete('/instruments/:id', authController.authorize, instrumentController.deleteInstrument)
+router.delete('/instruments/:id', authController.authorize, routerWrapper(instrumentController.deleteInstrument));
 
 
 module.exports = router;

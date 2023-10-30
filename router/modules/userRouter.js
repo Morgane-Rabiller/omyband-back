@@ -2,6 +2,8 @@ const express = require("express");
 const userController = require('../../controllers/userController.js');
 const authController =require("../../controllers/authController.js");
 const router = express.Router();
+const routerWrapper = require("../../middlewares/routerWrapper.js");
+
 
 //? USER ROUTES
 /**
@@ -24,7 +26,7 @@ const router = express.Router();
  *       500:
  *         description: Internal server error
  */
-router.post('/users', userController.createUser);
+router.post('/users', routerWrapper(userController.createUser));
 
 // Protected Routes: 
 /**
@@ -49,7 +51,7 @@ router.post('/users', userController.createUser);
  *        500:
  *          description: Internal server error
  */
-router.get('/users', authController.authorize, userController.getUsers);
+router.get('/users', authController.authorize, routerWrapper(userController.getUsers));
 /**
  * @swagger
  *  /users/{id}:
@@ -79,7 +81,7 @@ router.get('/users', authController.authorize, userController.getUsers);
  *        500:
  *          description: Internal server error
  */
-router.get('/users/profil', authController.authorize, userController.getUserById);
+router.get('/users/profil', authController.authorize, routerWrapper(userController.getUserById));
 /**
  * @swagger
  * /users/{id}:
@@ -117,7 +119,7 @@ router.get('/users/profil', authController.authorize, userController.getUserById
  *       500:
  *         description: Internal server error
  */
-router.put('/users/:id', authController.authorize, userController.updateUser);
+router.put('/users/:id', authController.authorize, routerWrapper(userController.updateUser));
 /**
  * @swagger
  * /users/{id}:
@@ -143,6 +145,6 @@ router.put('/users/:id', authController.authorize, userController.updateUser);
  *       500:
  *         description: Internal server error
  */
-router.delete('/users/:id',authController.authorize, userController.deleteUser);
+router.delete('/users/:id',authController.authorize, routerWrapper(userController.deleteUser));
 
 module.exports = router;

@@ -2,6 +2,8 @@ const express = require("express");
 const announcementController = require('../../controllers/announcementController.js');
 const authController =require("../../controllers/authController.js");
 const router = express.Router();
+const routerWrapper = require("../../middlewares/routerWrapper.js");
+
 
 //Routeurs announcements
 
@@ -23,7 +25,7 @@ const router = express.Router();
  *       500:
  *         description: Internal server error
  */
-router.get('/announcements', announcementController.getAnnouncement);
+router.get('/announcements', routerWrapper(announcementController.getAnnouncement));
 
 /**
  * @swagger
@@ -50,7 +52,7 @@ router.get('/announcements', announcementController.getAnnouncement);
  *       500:
  *         description: Internal server error
  */
-router.get('/announcements/:id', announcementController.getAnnouncementById);
+router.get('/announcements/:id', routerWrapper(announcementController.getAnnouncementById));
 
 /**
  * @swagger
@@ -78,7 +80,7 @@ router.get('/announcements/:id', announcementController.getAnnouncementById);
  *       500:
  *         description: Internal server error
  */
-router.post('/announcements', authController.authorize, announcementController.createAnnouncement);
+router.post('/announcements', authController.authorize, routerWrapper(announcementController.createAnnouncement));
 
 /**
  * @swagger
@@ -115,7 +117,7 @@ router.post('/announcements', authController.authorize, announcementController.c
  *       500:
  *         description: Internal server error
  */
-router.put('/announcements/:id', authController.authorize, announcementController.updateAnnouncement);
+router.put('/announcements/:id', authController.authorize, routerWrapper(announcementController.updateAnnouncement));
 
 /**
  * @swagger
@@ -140,6 +142,6 @@ router.put('/announcements/:id', authController.authorize, announcementControlle
  *       500:
  *         description: Internal server error
  */
-router.delete('/announcements/:id', authController.authorize, announcementController.deleteAnnouncement);
+router.delete('/announcements/:id', authController.authorize, routerWrapper(announcementController.deleteAnnouncement));
 
 module.exports = router;

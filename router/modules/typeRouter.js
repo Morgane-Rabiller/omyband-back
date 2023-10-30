@@ -2,6 +2,8 @@ const express = require("express");
 const typeController = require('../../controllers/typeController.js');
 const authController =require("../../controllers/authController.js");
 const router = express.Router();
+const routerWrapper = require("../../middlewares/routerWrapper.js");
+
 
 
 
@@ -27,7 +29,7 @@ const router = express.Router();
  *       500:
  *         description: Internal server error
  */
-router.get('/types', authController.authorize, typeController.getTypes);
+router.get('/types', authController.authorize, routerWrapper(typeController.getTypes));
 
 /**
  * @swagger
@@ -56,7 +58,7 @@ router.get('/types', authController.authorize, typeController.getTypes);
  *       500:
  *         description: Internal server error
  */
-router.get('/types/:id', authController.authorize, typeController.getTypeById);
+router.get('/types/:id', authController.authorize, routerWrapper(typeController.getTypeById));
 
 /**
  * @swagger
@@ -84,7 +86,7 @@ router.get('/types/:id', authController.authorize, typeController.getTypeById);
  *       500:
  *         description: Internal server error
  */
-router.post('/types', authController.authorize, typeController.createType);
+router.post('/types', authController.authorize, routerWrapper(typeController.createType));
 
 /**
  * @swagger
@@ -121,7 +123,7 @@ router.post('/types', authController.authorize, typeController.createType);
  *       500:
  *         description: Internal server error
  */
-router.put('/types/:id', authController.authorize, typeController.updateType);
+router.put('/types/:id', authController.authorize, routerWrapper(typeController.updateType));
 
 /**
  * @swagger
@@ -146,6 +148,6 @@ router.put('/types/:id', authController.authorize, typeController.updateType);
  *       500:
  *         description: Internal server error
  */
-router.delete('/types/:id', authController.authorize, typeController.deleteType);
+router.delete('/types/:id', authController.authorize, routerWrapper(typeController.deleteType));
 
 module.exports = router;
