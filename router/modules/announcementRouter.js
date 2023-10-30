@@ -78,7 +78,7 @@ router.get('/announcements/:id', announcementController.getAnnouncementById);
  *       500:
  *         description: Internal server error
  */
-router.post('/announcements/', authController.authorize, announcementController.createAnnouncement);
+router.post('/announcements', authController.authorize, announcementController.createAnnouncement);
 
 /**
  * @swagger

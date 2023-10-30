@@ -2,12 +2,42 @@ const {Announcement} =require( "../models/associations.js");
 
 const announcementController = {
     getAnnouncement: async (req, res) => {
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const startIndex = (page - 1) * limit;
+        const endIndex = (page * limit);
+
+        const filters = {
+            instruments: req.query.instruments ? req.query.instruments.split(',') : null,
+            styles: req.query.styles ? req.query.styles.split(',') : null,
+            userType: req.query.userType || null,
+            researchType: req.query.researchType || null,
+            userLocation: req.query.userLocation || null,
+        };
         try {
             const announcements = await Announcement.findAll({
-                include : ['user','instruments','styles', 'userType', 'researchType']
-            })
+                include : ['user','instruments','styles', 'userType', 'researchType'],
+                order: [['created_at', 'DESC']],
+            });
             if (announcements) {
-                return res.status(200).json(announcements);
+                filteredAnnoucements = announcements.filter((announcement) => {
+                    return (
+                        (!filters.instruments || filters.instruments.some(filterInstrument => announcement.instruments.some(announcementInstrument => parseInt(filterInstrument) === announcementInstrument.instrument_id))) &&
+                        (!filters.styles || filters.styles.some(filterStyle => announcement.styles.some(announcementStyle => parseInt(filterStyle) === announcementStyle.style_id))) &&
+                        (!filters.userType || announcement.user_type === parseInt(filters.userType)) &&
+                        (!filters.researchType || announcement.research_type  === parseInt(filters.researchType)) &&
+                        (!filters.userLocation || announcement.user.location === filters.userLocation)
+                    );
+                });
+                paginatedAnnoncements = filteredAnnoucements.slice(startIndex, endIndex);
+                formatedResponse = {
+                    page,
+                    limit,
+                    total: filteredAnnoucements.length,
+                    data: paginatedAnnoncements,
+                };
+                
+                return res.status(200).json(formatedResponse);
             } else {
                 return res.status(500).json({ message: "Announcements not return"});
             }
@@ -15,7 +45,7 @@ const announcementController = {
             console.log(error);
             res.status(500).json({message : 'default in Announcement route', error: error});
         }
-        //!! TODO : Filtres et Pagination !
+        
     },
     getAnnouncementById : async (req, res) => {
             const announcementId = parseInt(req.params.id, 10);
@@ -32,8 +62,10 @@ const announcementController = {
     },
     createAnnouncement: async (req, res) => {
         const { body } = req;
+        body.user_id = parseInt(req.user.user_id, 10);
         try {
             const announcement = await Announcement.create({...body});
+                announcement.setUser(body.user_id);
                 if (body.instruments) {
                     body.instruments.forEach(instrument => {
                         announcement.setInstruments(instrument.instrument_id);
