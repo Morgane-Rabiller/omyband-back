@@ -1,4 +1,4 @@
-const {Announcement} =require( "../models/associations.js");
+const {Announcement, User} =require( "../models/associations.js");
 
 const announcementController = {
     getAnnouncement: async (req, res) => {
@@ -16,11 +16,24 @@ const announcementController = {
         };
         try {
             const announcements = await Announcement.findAll({
-                include : ['user','instruments','styles', 'userType', 'researchType'],
+                include : [
+                    {
+                        model: User,
+                        as: 'user',
+                        attributes: {
+                            exclude: ["updated_at", 'password']
+                        },
+                        include:['role','instruments']
+                    },
+                    'instruments',
+                    'styles',
+                    'userType',
+                    'researchType'
+                ],
                 order: [['created_at', 'DESC']],
             });
             if (announcements) {
-                filteredAnnoucements = announcements.filter((announcement) => {
+                filteredAnnouncements = announcements.filter((announcement) => {
                     return (
                         (!filters.instruments || filters.instruments.some(filterInstrument => announcement.instruments.some(announcementInstrument => parseInt(filterInstrument) === announcementInstrument.instrument_id))) &&
                         (!filters.styles || filters.styles.some(filterStyle => announcement.styles.some(announcementStyle => parseInt(filterStyle) === announcementStyle.style_id))) &&
@@ -29,12 +42,12 @@ const announcementController = {
                         (!filters.userLocation || announcement.user.location === filters.userLocation)
                     );
                 });
-                paginatedAnnoncements = filteredAnnoucements.slice(startIndex, endIndex);
+                paginatedAnnouncements = filteredAnnouncements.slice(startIndex, endIndex);
                 formatedResponse = {
                     page,
                     limit,
-                    total: filteredAnnoucements.length,
-                    data: paginatedAnnoncements,
+                    total: filteredAnnouncements.length,
+                    data: paginatedAnnouncements,
                 };
                 
                 return res.status(200).json(formatedResponse);
