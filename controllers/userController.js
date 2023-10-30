@@ -23,7 +23,7 @@ const userController = {
     },
     
     getUserById: async (req, res) => {
-        console.log(req.user)
+        console.log(req.user);
         const userId = parseInt(req.user.user_id, 10);
         try {
             const user = await User.findByPk(userId, {
