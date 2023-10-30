@@ -2,10 +2,22 @@ const User = require( "../models/userModel.js");
 const jwt = require( 'jsonwebtoken');
 const bcrypt = require( 'bcrypt');
 require('dotenv').config()
+const sanitizeHtml = require('sanitize-html');
+
+const defalutOptionsSanitize = {
+    allowedTags: [],
+    allowedAttributes: {}
+}
 
 const authController = {
-login: async (req, res) => {
-        const { email, password } = req.body;
+    login: async (req, res) => {
+        console.log(req.body)
+        req.body.email = sanitizeHtml(req.body.email, defalutOptionsSanitize)
+        req.body.password = sanitizeHtml(req.body.password, defalutOptionsSanitize)
+        
+        const {email, password} = req.body
+        console.log(email)
+
         const user = await User.findOne({where: { email }});
         if (!user) {
             return res.status(401).json({message: "email ou mot de passe incorrect"});
@@ -51,14 +63,10 @@ login: async (req, res) => {
         if (!accessToken) {
             return res.status(401).json({message: "Format d'authorisation invalide"});
         }
-    
-        try {
+
             const decodedAccessToken = jwt.verify(accessToken, process.env.JWT_SECRET);
             req.user = decodedAccessToken.data;
             next()
-        } catch (error) {
-            res.status(401).json({message: "Token invalide"});
-        }
     },
 };
 
