@@ -1,4 +1,12 @@
-const Instrument = require( "../models/instrumentModel.js");
+const Instrument = require("../models/instrumentModel.js");
+
+const sanitizeHtml = require('sanitize-html');
+
+const defaultOptionsSanitize = {
+    allowedTags: [],
+    allowedAttributes: {}
+}
+
 
 const instrumentController = {
     getInstruments: async (req, res) => {
@@ -25,7 +33,7 @@ const instrumentController = {
     createInstrument: async (req, res) => {
         const { body } = req;
         for (const key in body) {
-            req.body[key] = sanitizeHtml(req.body[key], defalutOptionsSanitize);
+            req.body[key] = sanitizeHtml(req.body[key], defaultOptionsSanitize);
     }  
             const instrument = await Instrument.create({ ...body})
             return res.status(201).json({message : "Instrument créé", instrument});
@@ -37,7 +45,7 @@ const instrumentController = {
             const instrumentToUpdate = await Instrument.findByPk(instrumentId);
         const { body } = req;
         for (const key in body) {
-            req.body[key] = sanitizeHtml(req.body[key], defalutOptionsSanitize);
+            req.body[key] = sanitizeHtml(req.body[key], defaultOptionsSanitize);
     }  
             await instrumentToUpdate.update({...body});
             res.status(201).json({message : "Instrument modifié", instrument: instrumentToUpdate});

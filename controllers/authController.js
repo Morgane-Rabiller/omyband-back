@@ -4,7 +4,7 @@ const bcrypt = require( 'bcrypt');
 require('dotenv').config()
 const sanitizeHtml = require('sanitize-html');
 
-const defalutOptionsSanitize = {
+const defaultOptionsSanitize = {
     allowedTags: [],
     allowedAttributes: {}
 }
@@ -12,8 +12,8 @@ const defalutOptionsSanitize = {
 const authController = {
     login: async (req, res) => {
         console.log(req.body)
-        req.body.email = sanitizeHtml(req.body.email, defalutOptionsSanitize)
-        req.body.password = sanitizeHtml(req.body.password, defalutOptionsSanitize)
+        req.body.email = sanitizeHtml(req.body.email, defaultOptionsSanitize)
+        req.body.password = sanitizeHtml(req.body.password, defaultOptionsSanitize)
         
         const {email, password} = req.body
         console.log(email)

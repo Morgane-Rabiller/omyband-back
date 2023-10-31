@@ -2,6 +2,14 @@ import { sendMail } from '../services/contactMail.js';
 import 'dotenv/config';
 import { announcementController } from './announcementController.js';
 
+const sanitizeHtml = require('sanitize-html');
+
+const defaultOptionsSanitize = {
+    allowedTags: [],
+    allowedAttributes: {}
+}
+
+
 const contactController = {
 
     contactAdmin: async (req, res) => {

@@ -2,7 +2,7 @@ const Type =require( "../models/typeModel.js");
 
 const sanitizeHtml = require('sanitize-html');
 
-const defalutOptionsSanitize = {
+const defaultOptionsSanitize = {
     allowedTags: [],
     allowedAttributes: {}
 }
@@ -31,7 +31,7 @@ const typeController = {
     createType: async (req, res) => {
         const { body } = req;
         for (const key in body) {
-            req.body[key] = sanitizeHtml(req.body[key], defalutOptionsSanitize);
+            req.body[key] = sanitizeHtml(req.body[key], defaultOptionsSanitize);
     }  
             const type = await Type.create({ ...body })
             return res.status(201).json({message : "Type créé", type});
@@ -42,7 +42,7 @@ const typeController = {
             const typeToUpdate = await Type.findByPk(typeId);
         const { body } = req;
         for (const key in body) {
-            req.body[key] = sanitizeHtml(req.body[key], defalutOptionsSanitize);
+            req.body[key] = sanitizeHtml(req.body[key], defaultOptionsSanitize);
     }  
             await typeToUpdate.update({...body});
             res.status(201).json({message : "Utilisateur modifié", type: typeToUpdate});
