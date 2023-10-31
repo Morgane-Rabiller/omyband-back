@@ -22,6 +22,9 @@ const styleController = {
 
     createStyle: async (req, res) => {
         const { body } = req;
+        for (const key in body) {
+            req.body[key] = sanitizeHtml(req.body[key], defalutOptionsSanitize);
+    }  
             const style = await Style.create({ ...body})
             return res.status(201).json({message : "Style créé", style});
     },
@@ -30,7 +33,10 @@ const styleController = {
         const styleId = parseInt(req.params.id, 10);
 
             const styleToUpdate = await Style.findByPk(styleId);
-            const { body } = req;
+        const { body } = req;
+        for (const key in body) {
+            req.body[key] = sanitizeHtml(req.body[key], defalutOptionsSanitize);
+    }  
             await styleToUpdate.update({...body});
             res.status(201).json({message : "Style modifié", sytle: styleToUpdate});
 

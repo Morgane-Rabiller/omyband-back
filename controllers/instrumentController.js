@@ -24,6 +24,9 @@ const instrumentController = {
 
     createInstrument: async (req, res) => {
         const { body } = req;
+        for (const key in body) {
+            req.body[key] = sanitizeHtml(req.body[key], defalutOptionsSanitize);
+    }  
             const instrument = await Instrument.create({ ...body})
             return res.status(201).json({message : "Instrument créé", instrument});
     },
@@ -32,7 +35,10 @@ const instrumentController = {
         const instrumentId = parseInt(req.params.id, 10);
 
             const instrumentToUpdate = await Instrument.findByPk(instrumentId);
-            const { body } = req;
+        const { body } = req;
+        for (const key in body) {
+            req.body[key] = sanitizeHtml(req.body[key], defalutOptionsSanitize);
+    }  
             await instrumentToUpdate.update({...body});
             res.status(201).json({message : "Instrument modifié", instrument: instrumentToUpdate});
 

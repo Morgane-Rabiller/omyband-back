@@ -5,16 +5,12 @@ import { announcementController } from './announcementController.js';
 const contactController = {
 
     contactAdmin: async (req, res) => {
-        try{
+
             const to = process.env.EMAIL;
             const { subject, text } = req.body;
             await sendMail(to, subject, text);
             
             res.status(200).send({success: true, message: 'Email envoyé !'});
-
-        } catch (error) {
-            res.status(500).send({ success: false, message: 'Error !', error: error.message });
-        }
     },
 
     //! NEED :
