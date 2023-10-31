@@ -1,4 +1,12 @@
-const Role =require( "../models/roleModel.js");
+const Role = require("../models/roleModel.js");
+
+const sanitizeHtml = require('sanitize-html');
+
+const defaultOptionsSanitize = {
+    allowedTags: [],
+    allowedAttributes: {}
+}
+
 
 const roleController = {
     getRoles: async (req, res) => {
@@ -24,7 +32,7 @@ const roleController = {
     createRole: async (req, res) => {
         const { body } = req;
         for (const key in body) {
-            req.body[key] = sanitizeHtml(req.body[key], defalutOptionsSanitize);
+            req.body[key] = sanitizeHtml(req.body[key], defaultOptionsSanitize);
     }  
             const role = await Role.create({ ...body })
             return res.status(201).json({message : "Role créé", role});
@@ -35,7 +43,7 @@ const roleController = {
             const roleToUpdate = await Role.findByPk(roleId);
         const { body } = req;
         for (const key in body) {
-            req.body[key] = sanitizeHtml(req.body[key], defalutOptionsSanitize);
+            req.body[key] = sanitizeHtml(req.body[key], defaultOptionsSanitize);
     }  
             await roleToUpdate.update({...body});
             res.status(201).json({message : "Role modifié", role: roleToUpdate});

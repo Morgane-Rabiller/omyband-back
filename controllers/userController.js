@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 
 const sanitizeHtml = require('sanitize-html');
 
-const defalutOptionsSanitize = {
+const defaultOptionsSanitize = {
     allowedTags: [],
     allowedAttributes: {}
 }
@@ -59,7 +59,7 @@ const userController = {
             }
         const { body } = req;
         for (const key in body) {
-                req.body[key] = sanitizeHtml(req.body[key], defalutOptionsSanitize);
+                req.body[key] = sanitizeHtml(req.body[key], defaultOptionsSanitize);
         }  
             await userToUpdate.update({...body});
             res.status(201).json({message : "Utilisateur modifié", user: userToUpdate});

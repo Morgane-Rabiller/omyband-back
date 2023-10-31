@@ -1,4 +1,11 @@
-const Style =require( "../models/styleModel.js");
+const Style = require("../models/styleModel.js");
+const sanitizeHtml = require('sanitize-html');
+
+const defaultOptionsSanitize = {
+    allowedTags: [],
+    allowedAttributes: {}
+}
+
 
 const styleController = {
     getStyles: async (req, res) => {
@@ -23,7 +30,7 @@ const styleController = {
     createStyle: async (req, res) => {
         const { body } = req;
         for (const key in body) {
-            req.body[key] = sanitizeHtml(req.body[key], defalutOptionsSanitize);
+            req.body[key] = sanitizeHtml(req.body[key], defaultOptionsSanitize);
     }  
             const style = await Style.create({ ...body})
             return res.status(201).json({message : "Style créé", style});
@@ -35,7 +42,7 @@ const styleController = {
             const styleToUpdate = await Style.findByPk(styleId);
         const { body } = req;
         for (const key in body) {
-            req.body[key] = sanitizeHtml(req.body[key], defalutOptionsSanitize);
+            req.body[key] = sanitizeHtml(req.body[key], defaultOptionsSanitize);
     }  
             await styleToUpdate.update({...body});
             res.status(201).json({message : "Style modifié", sytle: styleToUpdate});

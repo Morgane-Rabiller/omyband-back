@@ -1,4 +1,12 @@
-const {Announcement, User} =require( "../models/associations.js");
+const { Announcement, User } = require("../models/associations.js");
+
+const sanitizeHtml = require('sanitize-html');
+
+const defaultOptionsSanitize = {
+    allowedTags: [],
+    allowedAttributes: {}
+}
+
 
 const announcementController = {
     getAnnouncement: async (req, res) => {
@@ -69,7 +77,7 @@ const announcementController = {
     createAnnouncement: async (req, res) => {
         const { body } = req;
         for (const key in body) {
-            req.body[key] = sanitizeHtml(req.body[key], defalutOptionsSanitize);
+            req.body[key] = sanitizeHtml(req.body[key], defaultOptionsSanitize);
     }  
         body.user_id = parseInt(req.user.user_id, 10);
             const announcement = await Announcement.create({...body});
@@ -91,7 +99,7 @@ const announcementController = {
             const announcementToUpdate = await Announcement.findByPk(announcementId);
         const { body } = req;
         for (const key in body) {
-            req.body[key] = sanitizeHtml(req.body[key], defalutOptionsSanitize);
+            req.body[key] = sanitizeHtml(req.body[key], defaultOptionsSanitize);
     }  
             await announcementToUpdate.update({...body});
             res.status(201).json({message : "Annonce modifié", announcement: announcementToUpdate});
