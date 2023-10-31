@@ -100,7 +100,20 @@ const announcementController = {
     findAnnouncementById: async (announcementId) => {
             const announcement = await Announcement.findByPk(announcementId, {
                     attributes : {exclude : ["createdAt", "updatedAt"]},
-                    include : ['user','instruments','styles', 'userType', 'researchType']
+                    include : [
+                    {
+                        model: User,
+                        as: 'user',
+                        attributes: {
+                            exclude: ["updated_at", 'password']
+                        },
+                        include:['role','instruments']
+                    },
+                    'instruments',
+                    'styles', 
+                    'userType', 
+                    'researchType'
+                ]
             });
             return announcement;
     },

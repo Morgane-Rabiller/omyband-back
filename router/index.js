@@ -14,7 +14,8 @@ const usersRouter = require('./modules/userRouter.js');
 const instrumentRouter = require('./modules/instrumentRouter.js');
 const announcementRouter = require('./modules/announcementRouter.js');
 const styleRouter = require('./modules/styleRouter.js');
-const typeRouter = require('./modules/typeRouter.js')
+const typeRouter = require('./modules/typeRouter.js');
+const contactRouter = require('./modules/contactRouter.js')
 
 router.use('/', rolesRouter);
 router.use('/', usersRouter);
@@ -22,6 +23,7 @@ router.use('/', instrumentRouter);
 router.use('/', announcementRouter);
 router.use('/', styleRouter);
 router.use('/', typeRouter);
+router.use('/', contactRouter);
 
 //? Route de log In :
 /**

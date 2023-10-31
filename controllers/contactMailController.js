@@ -1,6 +1,6 @@
-import { sendMail } from '../services/contactMail.js';
-import 'dotenv/config';
-import { announcementController } from './announcementController.js';
+const {sendMail, createHTML} = require('../services/contactMail.js');
+require('dotenv').config();
+const announcementController = require('./announcementController.js');
 
 const contactController = {
 
@@ -27,12 +27,19 @@ const contactController = {
     // -> je construit mon message en inscrivant le mais du user qui répond à l'annonce. 
     
     contactAnnouncement: async (req, res) => {
-        console.log("MonUserMail", req.user.email);
+        
         const announcementId = parseInt(req.body.announcement_id, 10);
         const announcement = await announcementController.findAnnouncementById(announcementId);
-        console.log("Mon Annonce", announcement.user);
+        // console.log("MonUserMail", req.user.email);
+        // console.log("Mon Annonce", announcement.user);
 
-        return "Fini";
+        const to = "mathgiraud33@gmail.com";
+        const { subject, text } = req.body;
+        const html = createHTML(announcement, req.user, text);
+        console.log('HTML', html);
+        await sendMail(to, subject, html);
+
+        return res.status(200).send({success: true, message: 'Email envoyé !'});
 //         try{
 //             const to = process.env.EMAIL;
 //             const { subject, text } = req.body;
@@ -46,4 +53,4 @@ const contactController = {
     },
 };
 
-export { contactController };
+module.exports = contactController;
