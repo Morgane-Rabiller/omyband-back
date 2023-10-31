@@ -1,4 +1,4 @@
-const {sendMail, createHTML} = require('../services/contactMail.js');
+const {sendMailAnnouncement, createHTML} = require('../services/contactMail.js');
 require('dotenv').config();
 const announcementController = require('./announcementController.js');
 
@@ -36,8 +36,7 @@ const contactController = {
         const to = "mathgiraud33@gmail.com";
         const { subject, text } = req.body;
         const html = createHTML(announcement, req.user, text);
-        console.log('HTML', html);
-        await sendMail(to, subject, html);
+        await sendMailAnnouncement(to, subject, html);
 
         return res.status(200).send({success: true, message: 'Email envoyé !'});
 //         try{

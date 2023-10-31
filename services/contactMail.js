@@ -1,4 +1,5 @@
 require('dotenv').config();
+const fs = require('fs');
 const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
@@ -10,12 +11,13 @@ const transporter = nodemailer.createTransport({
         pass: process.env.MAILPASS,
     }
 });
+const logoBuffer = fs.readFileSync('./services/imgs/Omy_band-Logo.png');
 const logoAttachment = {
     filename: 'Omy_band-Logo.png',
-    path: '/assets/imgs/Omy_band-Logo.png',
+    content: logoBuffer,
     cid: 'logo',
-  };
-  
+};
+
 
 const sendMail = async (to, subject, html) => {
     const  mailOptions = {
