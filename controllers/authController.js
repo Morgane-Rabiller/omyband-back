@@ -11,12 +11,10 @@ const defaultOptionsSanitize = {
 
 const authController = {
     login: async (req, res) => {
-        console.log(req.body)
         req.body.email = sanitizeHtml(req.body.email, defaultOptionsSanitize)
         req.body.password = sanitizeHtml(req.body.password, defaultOptionsSanitize)
         
         const {email, password} = req.body
-        console.log(email)
 
         const user = await User.findOne({where: { email }});
         if (!user) {
@@ -34,6 +32,7 @@ const authController = {
 },
 
     async generateAccessToken(user) {
+        console.log(user)
         return jwt.sign(
             {
                 data: {
@@ -65,7 +64,7 @@ const authController = {
         }
 
             const decodedAccessToken = jwt.verify(accessToken, process.env.JWT_SECRET);
-            req.user = decodedAccessToken.data;
+        req.user = decodedAccessToken.data;
             next()
     },
 };

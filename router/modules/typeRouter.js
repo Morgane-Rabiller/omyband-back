@@ -5,6 +5,11 @@ const router = express.Router();
 const routerWrapper = require("../../middlewares/routerWrapper.js");
 
 
+const validationModule = require("../../services/validation/validate.js")
+const {
+    typeSchema,
+} = require('../../services/validation/schema.js')
+
 
 
 //? Routes pour les types : 
@@ -86,7 +91,7 @@ router.get('/types/:id', authController.authorize, routerWrapper(typeController.
  *       500:
  *         description: Internal server error
  */
-router.post('/types', authController.authorize, routerWrapper(typeController.createType));
+router.post('/types', authController.authorize, validationModule.validateBody(typeSchema), routerWrapper(typeController.createType));
 
 /**
  * @swagger
@@ -123,7 +128,7 @@ router.post('/types', authController.authorize, routerWrapper(typeController.cre
  *       500:
  *         description: Internal server error
  */
-router.put('/types/:id', authController.authorize, routerWrapper(typeController.updateType));
+router.put('/types/:id', authController.authorize, validationModule.validateBody(typeSchema), routerWrapper(typeController.updateType));
 
 /**
  * @swagger

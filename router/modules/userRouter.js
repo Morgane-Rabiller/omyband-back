@@ -4,6 +4,12 @@ const authController =require("../../controllers/authController.js");
 const router = express.Router();
 const routerWrapper = require("../../middlewares/routerWrapper.js");
 
+const validationModule = require("../../services/validation/validate.js")
+const {
+    registerSchema,
+    updateUser
+} = require('../../services/validation/schema.js')
+
 
 //? USER ROUTES
 /**
@@ -26,7 +32,7 @@ const routerWrapper = require("../../middlewares/routerWrapper.js");
  *       500:
  *         description: Internal server error
  */
-router.post('/users', routerWrapper(userController.createUser));
+router.post('/users', validationModule.validateBody(registerSchema), routerWrapper(userController.createUser));
 
 // Protected Routes: 
 /**
@@ -119,7 +125,7 @@ router.get('/users/profil', authController.authorize, routerWrapper(userControll
  *       500:
  *         description: Internal server error
  */
-router.put('/users/:id', authController.authorize, routerWrapper(userController.updateUser));
+router.put('/users/:id', authController.authorize, validationModule.validateBody(updateUser), routerWrapper(userController.updateUser));
 /**
  * @swagger
  * /users/{id}:

@@ -78,9 +78,15 @@ const announcementController = {
         const { body } = req;
         for (const key in body) {
             req.body[key] = sanitizeHtml(req.body[key], defaultOptionsSanitize);
-    }  
+        }  
+        console.log(req.body);
+        console.log(req.user);
+
         body.user_id = parseInt(req.user.user_id, 10);
-            const announcement = await Announcement.create({...body});
+    
+
+    
+        const announcement = await Announcement.create({ ...body });
                 announcement.setUser(body.user_id);
                 if (body.instruments) {
                     body.instruments.forEach(instrument => {
