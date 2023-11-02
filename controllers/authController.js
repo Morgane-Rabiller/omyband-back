@@ -32,7 +32,6 @@ const authController = {
 },
 
     async generateAccessToken(user) {
-        console.log(user)
         return jwt.sign(
             {
                 data: {

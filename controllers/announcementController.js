@@ -79,8 +79,6 @@ const announcementController = {
         for (const key in body) {
             req.body[key] = sanitizeHtml(req.body[key], defaultOptionsSanitize);
         }  
-        console.log(req.body);
-        console.log(req.user);
 
         body.user_id = parseInt(req.user.user_id, 10);
     
