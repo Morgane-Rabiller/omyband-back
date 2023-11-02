@@ -4,22 +4,22 @@ const bcrypt = require( 'bcrypt');
 require('dotenv').config()
 
 const authController = {
-login: async (req, res) => {
-        const { email, password } = req.body;
-        const user = await User.findOne({where: { email }});
-        if (!user) {
+    login: async (req, res) => {
+            const { email, password } = req.body;
+            const user = await User.findOne({where: { email }});
+            if (!user) {
+                return res.status(401).json({message: "email ou mot de passe incorrect"});
+            }
+            if (await bcrypt.compare(password, user.password)) {
+                return authController.sendToken(res, user);
+            };
             return res.status(401).json({message: "email ou mot de passe incorrect"});
-        }
-        if (await bcrypt.compare(password, user.password)) {
-            return authController.sendToken(res, user);
-        };
-        return res.status(401).json({message: "email ou mot de passe incorrect"});
-},
+    },
 
-    async sendToken(res, user) {
-        const accessToken = await authController.generateAccessToken(user);
-    return res.status(200).json({ message: "Connexion réussie", accessToken});
-},
+        async sendToken(res, user) {
+            const accessToken = await authController.generateAccessToken(user);
+        return res.status(200).json({ message: "Connexion réussie", accessToken});
+    },
 
     async generateAccessToken(user) {
         return jwt.sign(
@@ -59,6 +59,26 @@ login: async (req, res) => {
         } catch (error) {
             res.status(401).json({message: "Token invalide"});
         }
+    },
+
+    addTokenUser: (req) => {
+        const header = req.headers['authorization'];
+        if (!header) {
+            return req.user = "";
+        }
+        const accessToken = header.split(' ')[1];
+        if (!accessToken) {
+            return req.user = "";
+        }
+        try {
+            const decodedAccessToken = jwt.verify(accessToken, process.env.JWT_SECRET);
+            req.user = decodedAccessToken.data;
+            return req.user = decodedAccessToken.data;
+        } catch (error) {
+            return req.user = "";
+        }
+        
+        
     },
 };
 

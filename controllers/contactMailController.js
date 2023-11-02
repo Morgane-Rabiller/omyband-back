@@ -1,4 +1,5 @@
 const sendMail = require('../services/contactMail.js');
+const {addTokenUser} = require('./authController.js');
 const createHtmlResponseAnnouncement = require('../services/templatesHtml/ResponseAnouncement.js');
 const createHtmlResponseConfirmation = require('../services/templatesHtml/ConfirmationSendedMail.js');
 const createHtmlContactAdmin = require('../services/templatesHtml/ContactAdmins.js');
@@ -8,21 +9,22 @@ const announcementController = require('./announcementController.js');
 const contactController = {
 
     contactAdmin: async (req, res) => {
-        //! Pour l'instant me manque l'info de savoir si j'ai un user ou nous ... 
-        //! me faut une fonction de check du accessToken ... 
-        //! sans qu'elle bloque la progression.
+        //Vérification de la présence ou non d'un token
+        //Si présent, nous retour le user qui envoie le message pour qu'il ait une confirmation d'envoie.
+        //Sinon envoie le message seulement aux admin.
+        const user = addTokenUser(req)
         const to = process.env.EMAIL;
         const { subject, text } = req.body;
-        if (req.user) {
-            const htmlToAdmin = createHtmlContactAdmin(req.user, text);
-            await sendMail(to, subject, htmlToAdmin);
-        } else {
+        if (user == "") {
             const htmlToAdmin = createHtmlContactAdmin( "" ,text);
             await sendMail(to, subject, htmlToAdmin);
+        } else {
+            const htmlToAdmin = createHtmlContactAdmin(user, text);
+            await sendMail(to, subject, htmlToAdmin);
         }
-            
-        if (req.user) {
-            const htmlConfirmation = createHtmlResponseConfirmation( "", req.user, text);
+
+        if (user) {
+            const htmlConfirmation = createHtmlResponseConfirmation( "", user, text);
             const subjectConfirmation = "Ton message a bien été envoyé !"
             const toUser = req.user.email;
             await sendMail(toUser, subjectConfirmation, htmlConfirmation);
@@ -31,7 +33,6 @@ const contactController = {
     },
     
     contactAnnouncement: async (req, res) => {
-        
         const announcementId = parseInt(req.body.announcement_id, 10);
         const announcement = await announcementController.findAnnouncementById(announcementId);
 
