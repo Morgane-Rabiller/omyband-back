@@ -1,7 +1,16 @@
-const {Announcement, User} =require( "../models/associations.js");
+const { Announcement, User } = require("../models/associations.js");
+
+const sanitizeHtml = require('sanitize-html');
+
+const defaultOptionsSanitize = {
+    allowedTags: [],
+    allowedAttributes: {}
+}
+
 
 const announcementController = {
     getAnnouncement: async (req, res) => {
+        
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 10;
         const startIndex = (page - 1) * limit;
@@ -14,6 +23,7 @@ const announcementController = {
             researchType: req.query.researchType || null,
             userLocation: req.query.userLocation || null,
         };
+
             const announcements = await Announcement.findAll({
                 include : [
                     {
@@ -66,6 +76,9 @@ const announcementController = {
     },
     createAnnouncement: async (req, res) => {
         const { body } = req;
+        for (const key in body) {
+            req.body[key] = sanitizeHtml(req.body[key], defaultOptionsSanitize);
+    }  
         body.user_id = parseInt(req.user.user_id, 10);
             const announcement = await Announcement.create({...body});
                 announcement.setUser(body.user_id);
@@ -84,7 +97,10 @@ const announcementController = {
     updateAnnouncement: async (req, res) => {
         const announcementId = parseInt(req.params.id, 10);
             const announcementToUpdate = await Announcement.findByPk(announcementId);
-            const { body } = req;
+        const { body } = req;
+        for (const key in body) {
+            req.body[key] = sanitizeHtml(req.body[key], defaultOptionsSanitize);
+    }  
             await announcementToUpdate.update({...body});
             res.status(201).json({message : "Annonce modifié", announcement: announcementToUpdate});
 

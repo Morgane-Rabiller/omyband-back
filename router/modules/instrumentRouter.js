@@ -13,8 +13,6 @@ const routerWrapper = require("../../middlewares/routerWrapper.js");
  *   get:
  *     summary: Get all instruments
  *     tags: [Instruments]
- *     security:
- *       - BearerAuth: []
  *     responses:
  *       200:
  *         description: An array of instruments
@@ -27,7 +25,7 @@ const routerWrapper = require("../../middlewares/routerWrapper.js");
  *       500:
  *         description: Internal server error
  */
-router.get('/instruments', authController.authorize, routerWrapper(instrumentController.getInstruments));
+router.get('/instruments', routerWrapper(instrumentController.getInstruments));
 
 /**
  * @swagger

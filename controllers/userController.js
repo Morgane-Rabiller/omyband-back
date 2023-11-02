@@ -1,5 +1,12 @@
 const {User} =require( "../models/associations.js");
-const bcrypt =require( 'bcrypt');
+const bcrypt = require('bcrypt');
+
+const sanitizeHtml = require('sanitize-html');
+
+const defaultOptionsSanitize = {
+    allowedTags: [],
+    allowedAttributes: {}
+}
 
 const userController = {
     
@@ -18,7 +25,6 @@ const userController = {
     },
     
     getUserById: async (req, res) => {
-        console.log(req.user);
         const userId = parseInt(req.user.user_id, 10);
             const user = await User.findByPk(userId, {
                 attributes : {exclude : ['createdAt', 'updatedAt', 'password']},
@@ -33,7 +39,7 @@ const userController = {
 
     createUser: async (req, res) => {
         const { body } = req;
-  
+
             const hashedPassword = await bcrypt.hash(body.password, 10);
             const user = await User.create({ ...body, password: hashedPassword });
             if (body.instruments) {
@@ -51,7 +57,10 @@ const userController = {
             if (!userToUpdate) {
                 return res.status(404).json('User not found');
             }
-            const { body } = req;
+        const { body } = req;
+        for (const key in body) {
+                req.body[key] = sanitizeHtml(req.body[key], defaultOptionsSanitize);
+        }  
             await userToUpdate.update({...body});
             res.status(201).json({message : "Utilisateur modifié", user: userToUpdate});
     },

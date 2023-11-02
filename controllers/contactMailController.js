@@ -6,6 +6,14 @@ const createHtmlContactAdmin = require('../services/templatesHtml/ContactAdmins.
 require('dotenv').config();
 const announcementController = require('./announcementController.js');
 
+const sanitizeHtml = require('sanitize-html');
+
+const defaultOptionsSanitize = {
+    allowedTags: [],
+    allowedAttributes: {}
+}
+
+
 const contactController = {
 
     contactAdmin: async (req, res) => {
