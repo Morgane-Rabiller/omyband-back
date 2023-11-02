@@ -1,5 +1,6 @@
-import 'dotenv/config';
-import nodemailer from 'nodemailer';
+require('dotenv').config();
+const fs = require('fs');
+const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
     service: 'Outlook365',
@@ -11,12 +12,20 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-const sendMail = async (to, subject, text) => {
+const logoBuffer = fs.readFileSync('./services/imgs/Omy_band-Logo.png');
+const logoAttachment = {
+    filename: 'Omy_band-Logo.png',
+    content: logoBuffer,
+    cid: 'logo',
+};
+
+const sendMail = async (to, subject, html) => {
     const  mailOptions = {
         from: process.env.EMAIL,
         to,
         subject,
-        text,
+        html,
+        attachments: [logoAttachment],
     };
     return transporter.sendMail(mailOptions);
 }
@@ -36,4 +45,5 @@ const sendMail = async (to, subject, text) => {
 // }
 // });
 
-export { sendMail };
+
+module.exports = sendMail;
