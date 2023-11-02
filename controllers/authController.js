@@ -11,20 +11,23 @@ const defaultOptionsSanitize = {
 
 const authController = {
     login: async (req, res) => {
-        console.log(req.body)
         req.body.email = sanitizeHtml(req.body.email, defaultOptionsSanitize)
         req.body.password = sanitizeHtml(req.body.password, defaultOptionsSanitize)
         
         const {email, password} = req.body
-        console.log(email)
 
         const user = await User.findOne({where: { email }});
         if (!user) {
             return res.status(401).json({message: "email ou mot de passe incorrect"});
+        }
+        if (await bcrypt.compare(password, user.password)) {
+            return authController.sendToken(res, user);
+        };
+        return res.status(401).json({message: "email ou mot de passe incorrect"});
     },
 
-        async sendToken(res, user) {
-            const accessToken = await authController.generateAccessToken(user);
+    async sendToken(res, user) {
+        const accessToken = await authController.generateAccessToken(user);
         return res.status(200).json({ message: "Connexion réussie", accessToken});
     },
 
