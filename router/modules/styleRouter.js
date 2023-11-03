@@ -5,6 +5,12 @@ const router = express.Router();
 const routerWrapper = require("../../middlewares/routerWrapper.js");
 
 
+const validationModule = require("../../services/validation/validate.js")
+const {
+    createStyleSchema,
+    updateStyleSchema
+} = require('../../services/validation/schema.js')
+
 //? Routes pour les styles :
 
 /**
@@ -82,7 +88,7 @@ router.get('/styles/:id', authController.authorize, routerWrapper(styleControlle
  *       500:
  *         description: Internal server error
  */
-router.post('/styles', authController.authorize, routerWrapper(styleController.createStyle));
+router.post('/styles', authController.authorize,  validationModule.validateBody(createStyleSchema), routerWrapper(styleController.createStyle));
 
 /**
  * @swagger
@@ -119,7 +125,7 @@ router.post('/styles', authController.authorize, routerWrapper(styleController.c
  *       500:
  *         description: Internal server error
  */
-router.put('/styles/:id', authController.authorize, routerWrapper(styleController.updateStyle));
+router.put('/styles/:id', authController.authorize,  validationModule.validateBody(updateStyleSchema), routerWrapper(styleController.updateStyle));
 
 /**
  * @swagger

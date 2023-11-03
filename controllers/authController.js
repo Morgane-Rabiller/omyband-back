@@ -63,7 +63,7 @@ const authController = {
         }
 
             const decodedAccessToken = jwt.verify(accessToken, process.env.JWT_SECRET);
-            req.user = decodedAccessToken.data;
+        req.user = decodedAccessToken.data;
             next()
     },
 

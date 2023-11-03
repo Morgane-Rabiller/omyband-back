@@ -4,6 +4,10 @@ const authController =require("../../controllers/authController.js");
 const router = express.Router();
 const routerWrapper = require("../../middlewares/routerWrapper.js");
 
+const validationModule = require("../../services/validation/validate.js")
+const {
+    roleSchema
+} = require('../../services/validation/schema.js')
 
 //? Routes pour les Roles : 
 /**
@@ -81,7 +85,7 @@ router.get('/roles/:id', authController.authorize, routerWrapper(roleController.
  *       500:
  *         description: Internal server error
  */
-router.post('/roles', authController.authorize, routerWrapper(roleController.createRole));
+router.post('/roles', authController.authorize, validationModule.validateBody(roleSchema), routerWrapper(roleController.createRole));
 /**
  * @swagger
  * /roles/{id}:
@@ -117,7 +121,7 @@ router.post('/roles', authController.authorize, routerWrapper(roleController.cre
  *       500:
  *         description: Internal server error
  */
-router.put('/roles/:id', authController.authorize, routerWrapper(roleController.updateRole));
+router.put('/roles/:id', authController.authorize, validationModule.validateBody(roleSchema), routerWrapper(roleController.updateRole));
 /**
  * @swagger
  * /roles/{id}:

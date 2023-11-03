@@ -5,6 +5,12 @@ const router = express.Router();
 const routerWrapper = require("../../middlewares/routerWrapper.js");
 
 
+const validationModule = require("../../services/validation/validate.js")
+const {
+isntrumentSchema
+} = require('../../services/validation/schema.js');
+const { Instruments } = require("../../models/associations.js");
+
 //? Routes pour les instruments : 
 
 /**
@@ -82,7 +88,7 @@ router.get('/instruments/:id', authController.authorize, routerWrapper(instrumen
  *       500:
  *         description: Internal server error
  */
-router.post('/instruments', authController.authorize, routerWrapper(instrumentController.createInstrument));
+router.post('/instruments', authController.authorize, validationModule.validateBody(isntrumentSchema),routerWrapper(instrumentController.createInstrument));
 
 /**
  * @swagger
@@ -119,7 +125,7 @@ router.post('/instruments', authController.authorize, routerWrapper(instrumentCo
  *       500:
  *         description: Internal server error
  */
-router.put('/instruments/:id', authController.authorize, routerWrapper(instrumentController.updateInstrument));
+router.put('/instruments/:id', authController.authorize, validationModule.validateBody(isntrumentSchema), routerWrapper(instrumentController.updateInstrument));
 
 /**
  * @swagger

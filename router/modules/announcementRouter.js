@@ -5,6 +5,12 @@ const router = express.Router();
 const routerWrapper = require("../../middlewares/routerWrapper.js");
 
 
+const validationModule = require("../../services/validation/validate.js")
+const {
+    createAnnouncementSchema,
+    updateAnnouncementSchema
+} = require('../../services/validation/schema.js')
+
 //Routeurs announcements
 
 /**
@@ -80,7 +86,7 @@ router.get('/announcements/:id', routerWrapper(announcementController.getAnnounc
  *       500:
  *         description: Internal server error
  */
-router.post('/announcements', authController.authorize, routerWrapper(announcementController.createAnnouncement));
+router.post('/announcements', authController.authorize, validationModule.validateBody(createAnnouncementSchema), routerWrapper(announcementController.createAnnouncement));
 
 /**
  * @swagger
@@ -117,7 +123,7 @@ router.post('/announcements', authController.authorize, routerWrapper(announceme
  *       500:
  *         description: Internal server error
  */
-router.put('/announcements/:id', authController.authorize, routerWrapper(announcementController.updateAnnouncement));
+router.put('/announcements/:id', authController.authorize, validationModule.validateBody(updateAnnouncementSchema), routerWrapper(announcementController.updateAnnouncement));
 
 /**
  * @swagger
