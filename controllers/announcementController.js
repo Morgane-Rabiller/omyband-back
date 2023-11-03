@@ -76,14 +76,6 @@ const announcementController = {
     },
     createAnnouncement: async (req, res) => {
         const { body } = req;
-<<<<<<< HEAD
-    //     for (const key in body) {
-    //         req.body[key] = sanitizeHtml(req.body[key], defaultOptionsSanitize);
-    // }  
-        body.user_id = parseInt(req.user.user_id, 10);
-        console.log('Userid', body.user_id)
-            const announcement = await Announcement.create({...body});
-=======
         for (const key in body) {
             req.body[key] = sanitizeHtml(req.body[key], defaultOptionsSanitize);
         }  
@@ -93,7 +85,6 @@ const announcementController = {
 
     
         const announcement = await Announcement.create({ ...body });
->>>>>>> data-validation
                 announcement.setUser(body.user_id);
                 if (body.instruments) {
                     body.instruments.forEach(instrument => {
