@@ -35,18 +35,18 @@ const patchUserSchema = Joi.object({
     description: Joi.string().allow(""),
   })
     .required()
-    .min(4);
+    .min(5);
 
     const updateAnnouncementSchema = Joi.object({
-      user_id : Joi.string(),
-      user_type: Joi.string(),
-      research_type: Joi.string().min(8),
+      user_id : Joi.number(),
+      user_type: Joi.number(),
+      research_type: Joi.number(),
       title: Joi.string(),
       description: Joi.string().allow(""),
     })
       .required()
       .min(1)
-      .max(4);
+      .max(5);
 
   
 const typeSchema = Joi.object({
