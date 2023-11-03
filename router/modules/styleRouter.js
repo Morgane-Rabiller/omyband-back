@@ -13,8 +13,6 @@ const routerWrapper = require("../../middlewares/routerWrapper.js");
  *   get:
  *     summary: Get all styles
  *     tags: [Styles]
- *     security:
- *       - BearerAuth: []
  *     responses:
  *       200:
  *         description: An array of styles
@@ -27,7 +25,7 @@ const routerWrapper = require("../../middlewares/routerWrapper.js");
  *       500:
  *         description: Internal server error
  */
-router.get('/styles', authController.authorize, routerWrapper(styleController.getStyles));
+router.get('/styles', routerWrapper(styleController.getStyles));
 
 /**
  * @swagger

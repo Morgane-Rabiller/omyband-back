@@ -44,14 +44,14 @@ const contactController = {
         const announcementId = parseInt(req.body.announcement_id, 10);
         const announcement = await announcementController.findAnnouncementById(announcementId);
 
-        //const to = announcement.user.email;
-        const to = "mathgiraud33@gmail.com";
+        const to = announcement.user.email;
         const { subject, text } = req.body;
         const htmlAnnoucementResponse = createHtmlResponseAnnouncement(announcement, req.user, text);
         await sendMail(to, subject, htmlAnnoucementResponse);
         const htmlConfirmation = createHtmlResponseConfirmation(announcement, req.user, text);
         const subjectConfirmation = "Ton message a bien été envoyé !"
-        await sendMail(to, subjectConfirmation, htmlConfirmation);
+        const toSender = req.user.email;
+        await sendMail(toSender, subjectConfirmation, htmlConfirmation);
         return res.status(200).send({success: true, message: 'Email envoyé !'});
     },
 };
