@@ -8,7 +8,7 @@ const registerSchema = Joi.object({
   location: Joi.string(),
   instruments: Joi.array(),
   description: Joi.string().allow(""),
-  avatar: Joi.string(),
+  avatar: Joi.string().allow(""),
   role_id: Joi.number()
 })
   .required()
