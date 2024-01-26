@@ -76,9 +76,14 @@ const announcementController = {
     },
     createAnnouncement: async (req, res) => {
         const { body } = req;
+        // for (const key in body) {
+        //     req.body[key] = sanitizeHtml(req.body[key], defaultOptionsSanitize);
+        // }  
         for (const key in body) {
-            req.body[key] = sanitizeHtml(req.body[key], defaultOptionsSanitize);
-        }  
+            if (typeof body[key] === 'string') {
+                req.body[key] = sanitizeHtml(req.body[key], defaultOptionsSanitize);
+            }
+        }
 
         body.user_id = parseInt(req.user.user_id, 10);
     
