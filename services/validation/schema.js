@@ -6,7 +6,7 @@ const registerSchema = Joi.object({
   password: Joi.string().min(8),
   email: Joi.string(),
   location: Joi.string(),
-  instruments: Joi.array().allow(null),
+  instruments: Joi.array(),
   description: Joi.string().allow(""),
   avatar: Joi.string(),
   role_id: Joi.number()
@@ -41,7 +41,7 @@ const createAnnouncementSchema = Joi.object({
   research_type: Joi.number(),
   title: Joi.string(),
   styles: Joi.array(),
-  instruments: Joi.array().items(isntrumentSchema),
+  instruments: Joi.array().allow(null),
   description: Joi.string().allow(""),
 })
   .required()
