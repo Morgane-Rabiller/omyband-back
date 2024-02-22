@@ -9,6 +9,9 @@ const transporter = nodemailer.createTransport({
     auth: {
         user: process.env.EMAIL,
         pass: process.env.MAILPASS,
+    },
+    tls: {
+        rejectUnauthorized: false
     }
 });
 
@@ -32,7 +35,7 @@ const sendMail = async (to, subject, html) => {
 
 // const mailOptions = {
 //     from: process.env.EMAIL,
-//     to: 'mathgiraud33@gmail.com',
+//     to: 'morganerabiller@yahoo.fr',
 //     subject: 'Test de Nodemailer',
 //     html: `<h1>Ceci est un test!</h1> Et normalement mon .env passe !<br/> ${process.env.EMAIL}`
 // };

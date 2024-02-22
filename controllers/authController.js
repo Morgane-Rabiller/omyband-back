@@ -45,6 +45,7 @@ const authController = {
                 },
             },
             process.env.JWT_SECRET,
+            // { expiresIn: '3h'}
         );
     },
 
@@ -53,18 +54,16 @@ const authController = {
     // Format : "bearer + ' ' + accessToken"
     authorize: async (req, res, next) => {
         const header = req.headers['authorization'];
-        if (!header) {
-            return res.status(401).json({message: "Aucun Token d'authorisation fourni"});
-        }
     
         const accessToken = header.split(' ')[1];
-        if (!accessToken) {
-            return res.status(401).json({message: "Format d'authorisation invalide"});
-        }
 
+        try {
             const decodedAccessToken = jwt.verify(accessToken, process.env.JWT_SECRET);
         req.user = decodedAccessToken.data;
             next()
+        } catch(error) {
+            return res.status(401).json({message: "Aucun Token d'authorisation fourni"});
+        }
     },
 
     addTokenUser: (req) => {
