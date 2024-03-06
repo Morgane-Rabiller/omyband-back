@@ -11,4 +11,6 @@ router.post('/contactAdmin', routerWrapper(contactController.contactAdmin));
 
 router.post('/contactAnnouncement', authController.authorize, routerWrapper(contactController.contactAnnouncement));
 
+router.post('/forgotPassword', routerWrapper(contactController.forgotPassword));
+
 module.exports = router;
