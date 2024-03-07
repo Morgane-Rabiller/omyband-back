@@ -77,10 +77,9 @@ const contactController = {
         const { email } = req.body;
         try {
             const user = await User.findOne({ where: { email } });
-            console.log(user.dataValues.pseudo);
                 const htmlConfirmation = createHtmlForgotPassword(
                     user.dataValues.pseudo,
-                    "https://oclock.io/"
+                    `http://updatePassword/${user.dataValues.user_id}`
                 );
                 await sendMail(email, "Mot de passe oublié", htmlConfirmation);
                 return res.status(200).json({ message: "Mail envoyé ✔" });

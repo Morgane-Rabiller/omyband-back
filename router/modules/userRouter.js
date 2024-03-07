@@ -34,6 +34,8 @@ const {
  */
 router.post('/users', validationModule.validateBody(registerSchema), routerWrapper(userController.createUser));
 
+router.put('/updatePassword/:userId', routerWrapper(userController.updatePasswordIfForgot));
+
 // Protected Routes: 
 /**
  * @swagger
