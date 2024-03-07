@@ -14,7 +14,7 @@ app.use(express.json());
 
 const corsOptions = {
     origin: "*",
-    methods: "GET, HEAD, POST, PATCH, DELETE, OPTIONS",
+    methods: "GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS",
     credentials: false,
     preflightContinue: false,
     allowedHeaders: "Content-Type, Authorization, X-Requested-With",

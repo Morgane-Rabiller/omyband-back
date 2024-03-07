@@ -79,7 +79,7 @@ const contactController = {
             const user = await User.findOne({ where: { email } });
                 const htmlConfirmation = createHtmlForgotPassword(
                     user.dataValues.pseudo,
-                    `http://updatePassword/${user.dataValues.user_id}`
+                    `http://localhost:8081/newPassword/${user.dataValues.user_id}`
                 );
                 await sendMail(email, "Mot de passe oublié", htmlConfirmation);
                 return res.status(200).json({ message: "Mail envoyé ✔" });
