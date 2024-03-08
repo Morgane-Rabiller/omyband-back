@@ -7,6 +7,7 @@ require("dotenv").config();
 const announcementController = require("./announcementController.js");
 const User = require("../models/userModel.js");
 const CryptoJS = require("crypto-js");
+const { v4: uuidv4 } = require('uuid');
 
 const sanitizeHtml = require("sanitize-html");
 const createHtmlForgotPassword = require("../services/templatesHtml/ForgotPassword.js");
@@ -80,7 +81,11 @@ const contactController = {
         try {
             const user = await User.findOne({ where: { email } });
             const userId = user.dataValues.user_id;
-            const tokenGenerated = contactController.generateUniqueToken(userId);
+            const userToDestroy = await PasswordResetToken.findOne({ where: { user_id: userId }});
+            if (userToDestroy) {
+                await PasswordResetToken.destroy({ where: { user_id: userId }});
+            }
+            const tokenGenerated = contactController.generateUniqueToken();
             const expiration = tokenGenerated.expiration;
             await PasswordResetToken.create({
                 user_id: userId,
@@ -104,11 +109,11 @@ const contactController = {
         }
     },
 
-    generateUniqueToken: (id) => {
+    generateUniqueToken: () => {
         const date = new Date();
         const expirationDate = new Date(date.getTime() + 1 * 60 * 60 * 1500);
         const hmacHash = CryptoJS.HmacSHA256(
-            id + date,
+            uuidv4(),
             process.env.HMAC_SECRET
         );
         return { token: hmacHash.toString(), expiration: expirationDate };
