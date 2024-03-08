@@ -6,9 +6,11 @@ const createHtmlContactAdmin = require("../services/templatesHtml/ContactAdmins.
 require("dotenv").config();
 const announcementController = require("./announcementController.js");
 const User = require("../models/userModel.js");
+const CryptoJS = require("crypto-js");
 
 const sanitizeHtml = require("sanitize-html");
 const createHtmlForgotPassword = require("../services/templatesHtml/ForgotPassword.js");
+const PasswordResetToken = require("../models/passwordResetToken.js");
 
 const defaultOptionsSanitize = {
     allowedTags: [],
@@ -77,16 +79,39 @@ const contactController = {
         const { email } = req.body;
         try {
             const user = await User.findOne({ where: { email } });
-                const htmlConfirmation = createHtmlForgotPassword(
-                    user.dataValues.pseudo,
-                    `http://localhost:8081/newPassword/${user.dataValues.user_id}`
-                );
-                await sendMail(email, "Mot de passe oublié", htmlConfirmation);
-                return res.status(200).json({ message: "Mail envoyé ✔" });
+            const userId = user.dataValues.user_id;
+            const tokenGenerated = contactController.generateUniqueToken(userId);
+            const expiration = tokenGenerated.expiration;
+            await PasswordResetToken.create({
+                user_id: userId,
+                token: tokenGenerated.token,
+                expiration: expiration,
+            });
+            const htmlConfirmation = createHtmlForgotPassword(
+                user.dataValues.pseudo,
+                `http://localhost:8081/newPassword/${tokenGenerated.token}`
+            );
+            await sendMail(email, "Mot de passe oublié", htmlConfirmation);
+            return res
+                .status(200)
+                .json({
+                    message: "Mail envoyé ✔",
+                    expiration,
+                });
         } catch (error) {
             console.log(error);
             res.status(401).json({ message: "Adresse mail non correct" });
         }
+    },
+
+    generateUniqueToken: (id) => {
+        const date = new Date();
+        const expirationDate = new Date(date.getTime() + 1 * 60 * 60 * 1500);
+        const hmacHash = CryptoJS.HmacSHA256(
+            id + date,
+            process.env.HMAC_SECRET
+        );
+        return { token: hmacHash.toString(), expiration: expirationDate };
     },
 };
 

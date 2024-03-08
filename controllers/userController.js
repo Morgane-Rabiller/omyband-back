@@ -2,6 +2,8 @@ const { User } = require("../models/associations.js");
 const bcrypt = require("bcrypt");
 
 const sanitizeHtml = require("sanitize-html");
+const PasswordResetToken = require("../models/passwordResetToken.js");
+const contactController = require("./contactMailController.js");
 
 const defaultOptionsSanitize = {
     allowedTags: [],
@@ -80,20 +82,30 @@ const userController = {
     },
 
     updatePasswordIfForgot: async (req, res) => {
-        console.log(req.params.userId);
         try {
-            const userId = parseInt(req.params.userId);
+            const token = req.params.token;
+            const idToken = await PasswordResetToken.findOne({where: { token }});
+            if(!idToken) {
+                return res.status(401).json({message: "Le lien n'est pas valide, refait une demande de changement de mot de passe pour que celui-ci fonctionne."});
+            }
+            const expiration = idToken.dataValues.expiration;
+            if (expiration < new Date()) {
+                await PasswordResetToken.destroy({ where: { token } });
+                return res.status(400).json({ message: "Le lien a expiré" });
+            }
+            const userId = idToken.dataValues.user_id;
             const currentUser = await User.findByPk(userId);
             const { password } = req.body;
             const newPasword = sanitizeHtml(password, defaultOptionsSanitize);
             const hashedPassword = await bcrypt.hash(newPasword, 10);
             currentUser.update({ password: hashedPassword });
+            await PasswordResetToken.destroy({ where: { token } });
             res.status(201).json({
                 message: `Vous avez changé votre mot de passe par ${hashedPassword}`,
             });
         } catch (error) {
             console.log(error);
-            res.status(401).json({message: "Non autorisé"});
+            res.status(401).json({message: "Une erreur s'est produite, réessai ultérieurement ou contacte nous"});
         }
     },
 };
