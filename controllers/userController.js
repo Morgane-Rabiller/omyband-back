@@ -94,8 +94,15 @@ const userController = {
             if(!await bcrypt.compare(sanitizePassword, oldPassword)) {
                 return res.status(401).json({ message: "L'ancien mot de passe n'est pas correct."});
             }
+            const regex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$/;
+            if(!regex.test(sanitizeNewPassword)) {
+                return res.status(401).json({ message: "Ton mot de passe doit comporter minimum 8 caractères dont une minuscule, une majuscule et un chiffre."});
+            }
             if(sanitizeNewPassword !== sanitizeNewPasswordRepeat) {
                 return res.status(401).json({ message: "Les nouveaux mots de passe ne correspondent pas."});
+            }
+            if (sanitizePassword === sanitizeNewPassword) {
+                return res.status(401).json({ message: "L'ancien mot de passe et le nouveau sont les mêmes."});
             }
 
             const hashedPassword = await bcrypt.hash(sanitizeNewPasswordRepeat, 10);
