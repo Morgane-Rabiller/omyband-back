@@ -14,7 +14,7 @@ const registerSchema = Joi.object({
   .required()
   .min(6);
 
-const patchUserSchema = Joi.object({
+const updateUser = Joi.object({
   // name: Joi.string(),
   pseudo: Joi.string(),
   password: Joi.string().min(8),
@@ -27,7 +27,6 @@ const patchUserSchema = Joi.object({
 })
   .required()
   .min(1)
-  .max(2);
 
   const isntrumentSchema = Joi.object({
     instrument_id: Joi.number(),
@@ -92,7 +91,7 @@ const updateStyleSchema = Joi.object({
 
 module.exports = {
   registerSchema,
-  patchUserSchema,
+  updateUser,
   roleSchema,
   typeSchema,
   isntrumentSchema,

@@ -128,6 +128,9 @@ router.get('/users/profil', authController.authorize, routerWrapper(userControll
  *         description: Internal server error
  */
 router.put('/users/:id', authController.authorize, validationModule.validateBody(updateUser), routerWrapper(userController.updateUser));
+
+router.put('/users/changePassword/:id', authController.authorize, routerWrapper(userController.updateUserPassword));
+
 /**
  * @swagger
  * /users/{id}:

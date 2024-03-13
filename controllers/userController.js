@@ -14,7 +14,7 @@ const userController = {
     getUsers: async (req, res) => {
         const users = await User.findAll({
             attributes: {
-                exclude: ["createdAt", "updatedAt", "password"],
+                exclude: ["createdAt", "updatedAt"],
             },
             include: ["role", "instruments"],
         });
@@ -60,14 +60,56 @@ const userController = {
         }
         const { body } = req;
         for (const key in body) {
-            req.body[key] = sanitizeHtml(req.body[key], defaultOptionsSanitize);
+            if (typeof body[key] === "string") {
+                req.body[key] = sanitizeHtml(
+                    req.body[key],
+                    defaultOptionsSanitize
+                );
+            }
         }
-        await userToUpdate.update({ ...body });
+        const { password, ...fieldsToUpdate } = body;
+        await userToUpdate.update(fieldsToUpdate);
         res.status(201).json({
             message: "Utilisateur modifié",
             user: userToUpdate,
         });
     },
+
+    updateUserPassword: async (req, res) => {
+        try {
+            const userId = parseInt(req.params.id, 10);
+
+            const userToUpdate = await User.findByPk(userId);
+            const oldPassword = userToUpdate.dataValues.password;
+            if (!userToUpdate) {
+                return res.status(404).json("Utilisateur non trouvé");
+            }
+
+            const { password, newPassword, newPasswordRepeat } = req.body;
+
+            const sanitizePassword = sanitizeHtml(password, defaultOptionsSanitize);
+            const sanitizeNewPassword = sanitizeHtml(newPassword, defaultOptionsSanitize);
+            const sanitizeNewPasswordRepeat = sanitizeHtml(newPasswordRepeat, defaultOptionsSanitize);
+
+            if(!await bcrypt.compare(sanitizePassword, oldPassword)) {
+                return res.status(401).json({ message: "L'ancien mot de passe n'est pas correct."});
+            }
+            if(sanitizeNewPassword !== sanitizeNewPasswordRepeat) {
+                return res.status(401).json({ message: "Les nouveaux mots de passe ne correspondent pas."});
+            }
+
+            const hashedPassword = await bcrypt.hash(sanitizeNewPasswordRepeat, 10);
+            await userToUpdate.update({ password: hashedPassword });
+            res.status(201).json({
+                message: "Ton mot de passe a bien été modifié. ✔",
+                user: userToUpdate,
+            });
+        } catch (error) {
+            console.log(error);
+            res.status(401).json({ message: "Echec du changement de mot de passe !" })
+        }
+    },
+
     deleteUser: async (req, res) => {
         const userId = parseInt(req.params.id, 10);
         const userToDelete = await User.findByPk(userId);
@@ -84,9 +126,16 @@ const userController = {
     updatePasswordIfForgot: async (req, res) => {
         try {
             const token = req.params.token;
-            const idToken = await PasswordResetToken.findOne({where: { token }});
-            if(!idToken) {
-                return res.status(401).json({message: "Le lien n'est pas valide, refait une demande de changement de mot de passe pour que celui-ci fonctionne."});
+            const idToken = await PasswordResetToken.findOne({
+                where: { token },
+            });
+            if (!idToken) {
+                return res
+                    .status(401)
+                    .json({
+                        message:
+                            "Le lien n'est pas valide, refait une demande de changement de mot de passe pour que celui-ci fonctionne.",
+                    });
             }
             const expiration = idToken.dataValues.expiration;
             if (expiration < new Date()) {
@@ -105,7 +154,10 @@ const userController = {
             });
         } catch (error) {
             console.log(error);
-            res.status(401).json({message: "Une erreur s'est produite, réessai ultérieurement ou contacte nous"});
+            res.status(401).json({
+                message:
+                    "Une erreur s'est produite, réessai ultérieurement ou contacte nous",
+            });
         }
     },
 };
