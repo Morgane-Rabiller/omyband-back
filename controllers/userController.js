@@ -67,6 +67,9 @@ const userController = {
                 );
             }
         }
+        const { instruments } = body;
+        await userToUpdate.setInstruments(instruments.map(instrument => instrument.instrument_id));
+
         const { password, ...fieldsToUpdate } = body;
         await userToUpdate.update(fieldsToUpdate);
         res.status(201).json({
