@@ -3,11 +3,17 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 require("dotenv").config();
 const sanitizeHtml = require("sanitize-html");
+const { RateLimiterMemory } = require('rate-limiter-flexible');
 
 const defaultOptionsSanitize = {
     allowedTags: [],
     allowedAttributes: {},
 };
+
+const rateLimiter = new RateLimiterMemory({
+    points: 3, // Nombre de requêtes autorisées
+    duration: 5 * 60, // Durée de la fenêtre en secondes (5 minutes)
+});
 
 const authController = {
     login: async (req, res) => {
@@ -19,18 +25,26 @@ const authController = {
 
         const { email, password } = req.body;
 
-        const user = await User.findOne({ where: { email } });
-        if (!user) {
+        try {
+            await rateLimiter.consume(email);
+            const user = await User.findOne({ where: { email } });
+            if (!user) {
+                return res
+                    .status(401)
+                    .json({ message: "Email ou mot de passe incorrect" });
+            }
+            if (await bcrypt.compare(password, user.password)) {
+                return authController.sendToken(res, user);
+            } else {
             return res
                 .status(401)
                 .json({ message: "email ou mot de passe incorrect" });
-        }
-        if (await bcrypt.compare(password, user.password)) {
-            return authController.sendToken(res, user);
-        }
-        return res
-            .status(401)
-            .json({ message: "email ou mot de passe incorrect" });
+            }
+        } catch (error) {
+            return res
+            .status(429)
+            .json({ message: "Trop de tentatives de connexion. Réessaie dans 5 minutes." });
+    }
     },
 
     async sendToken(res, user) {
