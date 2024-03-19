@@ -11,6 +11,9 @@ const defaultOptionsSanitize = {
 };
 
 const userController = {
+    passwordRegex: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$/,
+    emailRegex: /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/,
+
     getUsers: async (req, res) => {
         const users = await User.findAll({
             attributes: {
@@ -40,15 +43,54 @@ const userController = {
 
     createUser: async (req, res) => {
         const { body } = req;
-
-        const hashedPassword = await bcrypt.hash(body.password, 10);
-        const user = await User.create({ ...body, password: hashedPassword });
-        if (body.instruments) {
-            body.instruments.forEach((instrument) => {
-                user.setInstruments(instrument.instrument_id);
-            });
+        try {
+            
+            for (const key in body) {
+                if (typeof body[key] === "string") {
+                    req.body[key] = sanitizeHtml(
+                        req.body[key],
+                        defaultOptionsSanitize
+                        );
+                    }
+                }
+                const { pseudo, email, password, passwordRepeat } = req.body;
+                
+                const emailInBDD = await User.findOne({ where: { email } });
+                
+                if(emailInBDD) {
+                    return res.status(401).json({ message: "Adresse mail déjà existante." });
+                }
+                
+                if (pseudo.length < 4) {
+                    return res.status(401).json({ message: "Ton pseudo doit comporter plus de 3 caractères" });
+                }
+                
+                if (!userController.emailRegex.test(email)) {
+                    return res.status(401).json({ message: "Le format de l'adresse mail n'est pas correct" });
+                }
+                
+                if (!userController.passwordRegex.test(password) || password.length < 8) {
+                    return res.status(401).json({ message: "Ton mot de passe doit comporter minimum 8 caractères dont une minuscule, une majuscule et un chiffre." });
+                }
+                
+                if (password !== passwordRepeat) {
+                    return res.status(401).json({ message: "Les mots de passe de correspondent pas." });
+                }
+                
+                const hashedPassword = await bcrypt.hash(body.password, 10);
+                const user = await User.create({
+                    ...body,
+                    password: hashedPassword,
+                });
+                if (body.instruments) {
+                    body.instruments.forEach((instrument) => {
+                        user.setInstruments(instrument.instrument_id);
+                    });
+                }
+                return res.status(201).json({ message: "Compte créé ✔", user });
+            } catch (error) {
+            return res.status(401).json({ message: "Utilisateur non créé" });
         }
-        return res.status(201).json({ message: "Utilisateur créé", user });
     },
 
     updateUser: async (req, res) => {
@@ -68,7 +110,9 @@ const userController = {
             }
         }
         const { instruments } = body;
-        await userToUpdate.setInstruments(instruments.map(instrument => instrument.instrument_id));
+        await userToUpdate.setInstruments(
+            instruments.map((instrument) => instrument.instrument_id)
+        );
 
         const { password, ...fieldsToUpdate } = body;
         await userToUpdate.update(fieldsToUpdate);
@@ -90,25 +134,59 @@ const userController = {
 
             const { password, newPassword, newPasswordRepeat } = req.body;
 
-            const sanitizePassword = sanitizeHtml(password, defaultOptionsSanitize);
-            const sanitizeNewPassword = sanitizeHtml(newPassword, defaultOptionsSanitize);
-            const sanitizeNewPasswordRepeat = sanitizeHtml(newPasswordRepeat, defaultOptionsSanitize);
+            const sanitizePassword = sanitizeHtml(
+                password,
+                defaultOptionsSanitize
+            );
+            const sanitizeNewPassword = sanitizeHtml(
+                newPassword,
+                defaultOptionsSanitize
+            );
+            const sanitizeNewPasswordRepeat = sanitizeHtml(
+                newPasswordRepeat,
+                defaultOptionsSanitize
+            );
 
-            if(!await bcrypt.compare(sanitizePassword, oldPassword)) {
-                return res.status(401).json({ message: "L'ancien mot de passe n'est pas correct."});
+            if (!(await bcrypt.compare(sanitizePassword, oldPassword))) {
+                return res
+                    .status(401)
+                    .json({
+                        message: "L'ancien mot de passe n'est pas correct.",
+                    });
             }
-            const regex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$/;
-            if(!regex.test(sanitizeNewPassword)) {
-                return res.status(401).json({ message: "Ton mot de passe doit comporter minimum 8 caractères dont une minuscule, une majuscule et un chiffre."});
+
+            // const regex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$/;
+            if (!userController.passwordRegex.test(sanitizeNewPassword)) {
+                return res
+                    .status(401)
+                    .json({
+                        message:
+                            "Ton mot de passe doit comporter minimum 8 caractères dont une minuscule, une majuscule et un chiffre.",
+                    });
             }
-            if(sanitizeNewPassword !== sanitizeNewPasswordRepeat) {
-                return res.status(401).json({ message: "Les nouveaux mots de passe ne correspondent pas."});
+
+            if (sanitizeNewPassword !== sanitizeNewPasswordRepeat) {
+                return res
+                    .status(401)
+                    .json({
+                        message:
+                            "Les nouveaux mots de passe ne correspondent pas.",
+                    });
             }
+
             if (sanitizePassword === sanitizeNewPassword) {
-                return res.status(401).json({ message: "L'ancien mot de passe et le nouveau sont les mêmes."});
+                return res
+                    .status(401)
+                    .json({
+                        message:
+                            "L'ancien mot de passe et le nouveau sont les mêmes.",
+                    });
             }
 
-            const hashedPassword = await bcrypt.hash(sanitizeNewPasswordRepeat, 10);
+            const hashedPassword = await bcrypt.hash(
+                sanitizeNewPasswordRepeat,
+                10
+            );
             await userToUpdate.update({ password: hashedPassword });
             res.status(201).json({
                 message: "Ton mot de passe a bien été modifié. ✔",
@@ -116,7 +194,9 @@ const userController = {
             });
         } catch (error) {
             console.log(error);
-            res.status(401).json({ message: "Echec du changement de mot de passe !" })
+            res.status(401).json({
+                message: "Echec du changement de mot de passe !",
+            });
         }
     },
 
@@ -140,12 +220,10 @@ const userController = {
                 where: { token },
             });
             if (!idToken) {
-                return res
-                    .status(401)
-                    .json({
-                        message:
-                            "Le lien n'est pas valide, refait une demande de changement de mot de passe pour que celui-ci fonctionne.",
-                    });
+                return res.status(401).json({
+                    message:
+                        "Le lien n'est pas valide, refait une demande de changement de mot de passe pour que celui-ci fonctionne.",
+                });
             }
             const expiration = idToken.dataValues.expiration;
             if (expiration < new Date()) {

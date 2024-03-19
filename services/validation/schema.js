@@ -3,10 +3,11 @@ const Joi = require("joi")
 const registerSchema = Joi.object({
   // name : Joi.string(),
   pseudo: Joi.string(),
-  password: Joi.string().min(8),
+  password: Joi.string(),
+  passwordRepeat: Joi.string(),
   email: Joi.string(),
-  location: Joi.string(),
-  instruments: Joi.array(),
+  location: Joi.string().allow(""),
+  instruments: Joi.array().default([]),
   description: Joi.string().allow(""),
   avatar: Joi.string().allow(""),
   role_id: Joi.number()
