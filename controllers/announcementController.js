@@ -111,7 +111,6 @@ const announcementController = {
         }
         try {
             body.user_id = parseInt(req.user.user_id, 10);
-            console.log(body);
             const { user_type, research_type, instruments, styles, description } = body;
 
             if(!user_type) {
