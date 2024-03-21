@@ -76,9 +76,6 @@ const announcementController = {
     },
     createAnnouncement: async (req, res) => {
         const { body } = req;
-        // for (const key in body) {
-        //     req.body[key] = sanitizeHtml(req.body[key], defaultOptionsSanitize);
-        // }  
         for (const key in body) {
             if (typeof body[key] === 'string') {
                 req.body[key] = sanitizeHtml(req.body[key], defaultOptionsSanitize);

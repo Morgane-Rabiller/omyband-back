@@ -1,3 +1,5 @@
+SET client_encoding = 'UTF8';
+
 BEGIN;
 
 -- Suppression des tables si elles existent déjà
