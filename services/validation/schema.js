@@ -57,8 +57,7 @@ const updateAnnouncementSchema = Joi.object({
   description: Joi.string().allow(""),
 })
   .required()
-  .min(1)
-  .max(5);
+  .min(1);
 
 
 const typeSchema = Joi.object({

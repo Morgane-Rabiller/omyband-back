@@ -151,15 +151,36 @@ const announcementController = {
         const announcementToUpdate = await Announcement.findByPk(
             announcementId
         );
-        const { body } = req;
-        for (const key in body) {
-            req.body[key] = sanitizeHtml(req.body[key], defaultOptionsSanitize);
+
+        try {
+            const { body } = req;
+
+            for (const key in body) {
+                if (typeof body[key] === "string") {
+                    req.body[key] = sanitizeHtml(
+                        req.body[key],
+                        defaultOptionsSanitize
+                    );
+                }
+            }
+            const { instruments, styles } = body;
+            await announcementToUpdate.setInstruments(
+                instruments.map((instrument) => instrument.instrument_id)
+            );
+            
+            await announcementToUpdate.setStyles(
+                styles.map((style) => style.style_id)
+            );
+    
+            await announcementToUpdate.update({ ...body });
+            res.status(201).json({
+                message: "Annonce modifié",
+                announcement: announcementToUpdate,
+            });
+        } catch (error) {
+            console.log(error);
+            return res.status(401).json({ message: "L'annonce n'a pas été modifiée" });
         }
-        await announcementToUpdate.update({ ...body });
-        res.status(201).json({
-            message: "Annonce modifié",
-            announcement: announcementToUpdate,
-        });
     },
     deleteAnnouncement: async (req, res) => {
         const announcementId = parseInt(req.params.id, 10);
