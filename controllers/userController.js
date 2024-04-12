@@ -219,12 +219,14 @@ const userController = {
             const idToken = await PasswordResetToken.findOne({
                 where: { token },
             });
+            // Si le token unique ne se trouve pas dans la table, on retourne un message d'erreur
             if (!idToken) {
                 return res.status(401).json({
                     message:
                         "Le lien n'est pas valide, refait une demande de changement de mot de passe pour que celui-ci fonctionne.",
                 });
             }
+            // Si la date d'expiration est passé, on supprime le token et on retourne un message d'erreur
             const expiration = idToken.dataValues.expiration;
             if (expiration < new Date()) {
                 await PasswordResetToken.destroy({ where: { token } });
@@ -235,6 +237,7 @@ const userController = {
             const { password } = req.body;
             const newPasword = sanitizeHtml(password, defaultOptionsSanitize);
             const hashedPassword = await bcrypt.hash(newPasword, 10);
+            // Si tout se passe bien, on enregistre le nouveau mot de passe en base de données
             currentUser.update({ password: hashedPassword });
             await PasswordResetToken.destroy({ where: { token } });
             res.status(201).json({
